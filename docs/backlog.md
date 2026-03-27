@@ -18,7 +18,7 @@
 
 | Priority | Issue | Notes |
 |----------|-------|-------|
-| P0 | No devops architecture defined | No CI/CD, deployment pipeline, environments, or infra-as-code in place |
+| ~~P0~~ | ~~No devops architecture defined~~ | Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments |
 
 ## AWS Backend Features
 
