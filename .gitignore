@@ -1,0 +1,9 @@
+# Claude
+.claude/settings.local.json
+
+# Vite cache
+.vite
+
+# OS
+.DS_Store
+Thumbs.db
