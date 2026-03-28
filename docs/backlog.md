@@ -18,12 +18,14 @@
 
 | Priority | Issue | Notes |
 |----------|-------|-------|
-| ~~P0~~ | ~~No devops architecture defined~~ | Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments |
+| ~~P0~~ | ~~No devops architecture defined~~ | ~~Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments~~ |
+| P0 | Migrate hosting to AWS | App currently served from personal PC; needs to move to S3 + CloudFront |
 
 ## AWS Backend Features
 
 | Priority | Feature | Notes |
 |----------|---------|-------|
+| P0 | CloudFront + S3 | Provision S3 bucket and CloudFront distribution to replace personal PC hosting |
 | P1 | S3 | Host bird call audio files; wire up playback (also fixes silent audio bug) |
 | P1 | Cognito | Replace localStorage auth with real user sessions |
 | P1 | DynamoDB | Persist game progress and user data server-side |
