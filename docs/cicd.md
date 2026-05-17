@@ -120,3 +120,109 @@ Cloudflare DNS records are managed manually (not via Terraform) since the Cloudf
 ## AWS Region
 
 All infrastructure: `us-east-1`. CloudFront is a global service and handles geographic distribution regardless of origin region.
+
+---
+
+## Setup Guide (First-Time Deployment)
+
+### Prerequisites
+
+- AWS CLI configured with credentials that have admin-level access
+- Terraform >= 1.6 installed
+- Access to the Cloudflare dashboard for `3569081.xyz`
+
+### Step 1 — Bootstrap the remote backend
+
+Creates the S3 state bucket, DynamoDB lock table, and the GitHub Actions OIDC provider. Run once per AWS account.
+
+```bash
+cd terraform/bootstrap
+terraform init
+terraform apply
+```
+
+### Step 2 — Apply each environment
+
+Repeat for `dev`, `test`, `staging`, and `prod` in that order.
+
+#### 2a. ACM certificate (first apply, targeted)
+
+ACM certificate validation requires DNS records in Cloudflare before the CloudFront distribution can be created. Apply the certificate resource first so you can read the validation records from state:
+
+```bash
+cd terraform/environments/dev   # repeat for test, staging, prod
+terraform init
+terraform apply -target=module.static_site.aws_acm_certificate.site
+```
+
+#### 2b. Add DNS validation records to Cloudflare
+
+Read the required CNAME records from state:
+
+```bash
+terraform output certificate_validation_records
+```
+
+In the Cloudflare dashboard, add each record to `3569081.xyz`:
+- Type: `CNAME`
+- Proxy status: **DNS only** (gray cloud)
+- Name/Value: as shown in the output
+
+Wait for ACM to show the certificate as `Issued` (usually 5–15 minutes).
+
+#### 2c. Full apply
+
+```bash
+terraform apply
+```
+
+This creates the CloudFront distribution, OAC, S3 bucket policy, and IAM deploy role.
+
+#### 2d. Add Cloudflare CNAME for the environment domain
+
+Read the CloudFront domain from state:
+
+```bash
+terraform output cloudfront_domain_name
+```
+
+In Cloudflare, add a CNAME record for the environment subdomain pointing to that `*.cloudfront.net` domain:
+
+| Environment | Name | Target |
+|-------------|------|--------|
+| dev | `dev.birdz` | CloudFront domain from output |
+| test | `test.birdz` | CloudFront domain from output |
+| staging | `staging.birdz` | CloudFront domain from output |
+| prod | `birdz` (apex) | CloudFront domain from output |
+
+Proxy status: **DNS only** (gray cloud) on all records.
+
+### Step 3 — Populate GitHub Actions secrets
+
+After applying each environment, retrieve its outputs:
+
+```bash
+terraform output github_actions_role_arn      # → AWS_ROLE_ARN_<ENV>
+terraform output cloudfront_distribution_id   # → CF_DISTRIBUTION_ID_<ENV>
+```
+
+Add these as secrets in the GitHub repository (`Settings → Secrets and variables → Actions`):
+
+| Secret | Source |
+|--------|--------|
+| `AWS_ROLE_ARN_DEV` | `terraform output` in `environments/dev` |
+| `AWS_ROLE_ARN_TEST` | `terraform output` in `environments/test` |
+| `AWS_ROLE_ARN_STAGING` | `terraform output` in `environments/staging` |
+| `AWS_ROLE_ARN_PROD` | `terraform output` in `environments/prod` |
+| `CF_DISTRIBUTION_ID_DEV` | `terraform output` in `environments/dev` |
+| `CF_DISTRIBUTION_ID_TEST` | `terraform output` in `environments/test` |
+| `CF_DISTRIBUTION_ID_STAGING` | `terraform output` in `environments/staging` |
+| `CF_DISTRIBUTION_ID_PROD` | `terraform output` in `environments/prod` |
+
+### Step 4 — Configure the prod GitHub Environment
+
+In the GitHub repository (`Settings → Environments → prod`), add yourself as a required reviewer. This creates the manual approval gate that pauses the `deploy-prod` job until approved.
+
+### Step 5 — Verify
+
+Push to `main`. The `deploy.yml` workflow should build, test, and deploy to the dev environment automatically. Check `dev.birdz.3569081.xyz` once the run completes.
