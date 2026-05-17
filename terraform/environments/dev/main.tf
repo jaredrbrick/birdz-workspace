@@ -18,7 +18,7 @@ module "static_site" {
   environment = "dev"
   domain      = "dev.birdz.3569081.xyz"
   bucket_name      = "birdz-dev-site"
-  github_sub_claim = "repo:jaredrbrick/birdz-workspace:ref:refs/heads/main"
+  github_sub_claim = "repo:jaredrbrick/birdz-workspace:environment:dev"
 
   tags = {
     Project     = "birdz"
