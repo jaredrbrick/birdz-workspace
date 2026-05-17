@@ -42,3 +42,7 @@ output "s3_bucket_name" {
 output "certificate_validation_records" {
   value = module.static_site.certificate_validation_records
 }
+
+output "github_actions_role_arn" {
+  value = module.static_site.github_actions_role_arn
+}

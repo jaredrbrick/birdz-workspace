@@ -50,14 +50,14 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-dev-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_DEV }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://dev.birdz.3569081.xyz/ -o /dev/null
@@ -79,14 +79,14 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_TEST }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-test-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_TEST }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://test.birdz.3569081.xyz/ -o /dev/null
@@ -108,14 +108,14 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGING }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-staging-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_STAGING }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://staging.birdz.3569081.xyz/ -o /dev/null
@@ -137,14 +137,14 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-prod-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_PROD }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://birdz.3569081.xyz/ -o /dev/null

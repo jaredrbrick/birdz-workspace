@@ -199,25 +199,23 @@ Proxy status: **DNS only** (gray cloud) on all records.
 
 ### Step 3 — Populate GitHub Actions secrets
 
-After applying each environment, retrieve its outputs:
+Secrets are stored per GitHub Environment (`Settings → Environments → <env> → Environment secrets`), not as repository secrets. This scopes each secret to the job that needs it.
+
+After applying each environment, retrieve its values:
 
 ```bash
-terraform output github_actions_role_arn      # → AWS_ROLE_ARN_<ENV>
-terraform output cloudfront_distribution_id   # → CF_DISTRIBUTION_ID_<ENV>
+terraform output github_actions_role_arn    # → AWS_ROLE_ARN
+terraform output cloudfront_distribution_id # → CF_DISTRIBUTION_ID
 ```
 
-Add these as secrets in the GitHub repository (`Settings → Secrets and variables → Actions`):
+Add two secrets to **each** GitHub Environment using the same names:
 
-| Secret | Source |
-|--------|--------|
-| `AWS_ROLE_ARN_DEV` | `terraform output` in `environments/dev` |
-| `AWS_ROLE_ARN_TEST` | `terraform output` in `environments/test` |
-| `AWS_ROLE_ARN_STAGING` | `terraform output` in `environments/staging` |
-| `AWS_ROLE_ARN_PROD` | `terraform output` in `environments/prod` |
-| `CF_DISTRIBUTION_ID_DEV` | `terraform output` in `environments/dev` |
-| `CF_DISTRIBUTION_ID_TEST` | `terraform output` in `environments/test` |
-| `CF_DISTRIBUTION_ID_STAGING` | `terraform output` in `environments/staging` |
-| `CF_DISTRIBUTION_ID_PROD` | `terraform output` in `environments/prod` |
+| Secret | Value |
+|--------|-------|
+| `AWS_ROLE_ARN` | `github_actions_role_arn` output from that environment |
+| `CF_DISTRIBUTION_ID` | `cloudfront_distribution_id` output from that environment |
+
+Repeat for `dev`, `test`, `staging`, and `prod`.
 
 ### Step 4 — Configure the prod GitHub Environment
 
