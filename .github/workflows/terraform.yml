@@ -1,0 +1,109 @@
+name: Terraform
+
+on:
+  push:
+    branches: [main, test, staging, prod]
+    paths:
+      - 'terraform/environments/**'
+      - 'terraform/modules/**'
+
+jobs:
+  terraform-dev:
+    name: Apply → dev
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/dev
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.TF_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+  terraform-test:
+    name: Apply → test
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/test
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.TF_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+  terraform-staging:
+    name: Apply → staging
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.TF_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+  terraform-prod:
+    name: Apply → prod
+    if: github.ref == 'refs/heads/prod'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/prod
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.TF_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}

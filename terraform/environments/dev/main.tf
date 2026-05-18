@@ -5,11 +5,24 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
+    }
   }
 }
 
 provider "aws" {
   region = "us-east-1"
+}
+
+provider "github" {
+  owner = "jaredrbrick"
+  # reads GITHUB_TOKEN from environment
 }
 
 module "static_site" {
@@ -63,4 +76,32 @@ output "cognito_user_pool_id" {
 
 output "cognito_client_id" {
   value = module.cognito.client_id
+}
+
+resource "github_actions_environment_secret" "aws_role_arn" {
+  repository      = "birdz-workspace"
+  environment     = "dev"
+  secret_name     = "AWS_ROLE_ARN"
+  plaintext_value = module.static_site.github_actions_role_arn
+}
+
+resource "github_actions_environment_secret" "cf_distribution_id" {
+  repository      = "birdz-workspace"
+  environment     = "dev"
+  secret_name     = "CF_DISTRIBUTION_ID"
+  plaintext_value = module.static_site.cloudfront_distribution_id
+}
+
+resource "github_actions_environment_secret" "cognito_user_pool_id" {
+  repository      = "birdz-workspace"
+  environment     = "dev"
+  secret_name     = "COGNITO_USER_POOL_ID"
+  plaintext_value = module.cognito.user_pool_id
+}
+
+resource "github_actions_environment_secret" "cognito_client_id" {
+  repository      = "birdz-workspace"
+  environment     = "dev"
+  secret_name     = "COGNITO_CLIENT_ID"
+  plaintext_value = module.cognito.client_id
 }

@@ -5,6 +5,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
+    }
   }
 }
 
@@ -12,11 +20,15 @@ provider "aws" {
   region = "us-east-1"
 }
 
+provider "github" {
+  owner = "jaredrbrick"
+}
+
 module "static_site" {
   source = "../../modules/static-site"
 
-  environment = "test"
-  domain      = "test.birdz.3569081.xyz"
+  environment      = "test"
+  domain           = "test.birdz.3569081.xyz"
   bucket_name      = "birdz-test-site"
   github_sub_claim = "repo:jaredrbrick/birdz-workspace:environment:test"
 
@@ -25,6 +37,44 @@ module "static_site" {
     Environment = "test"
     ManagedBy   = "terraform"
   }
+}
+
+module "cognito" {
+  source      = "../../modules/cognito"
+  environment = "test"
+  tags = {
+    Project     = "birdz"
+    Environment = "test"
+    ManagedBy   = "terraform"
+  }
+}
+
+resource "github_actions_environment_secret" "aws_role_arn" {
+  repository      = "birdz-workspace"
+  environment     = "test"
+  secret_name     = "AWS_ROLE_ARN"
+  plaintext_value = module.static_site.github_actions_role_arn
+}
+
+resource "github_actions_environment_secret" "cf_distribution_id" {
+  repository      = "birdz-workspace"
+  environment     = "test"
+  secret_name     = "CF_DISTRIBUTION_ID"
+  plaintext_value = module.static_site.cloudfront_distribution_id
+}
+
+resource "github_actions_environment_secret" "cognito_user_pool_id" {
+  repository      = "birdz-workspace"
+  environment     = "test"
+  secret_name     = "COGNITO_USER_POOL_ID"
+  plaintext_value = module.cognito.user_pool_id
+}
+
+resource "github_actions_environment_secret" "cognito_client_id" {
+  repository      = "birdz-workspace"
+  environment     = "test"
+  secret_name     = "COGNITO_CLIENT_ID"
+  plaintext_value = module.cognito.client_id
 }
 
 output "cloudfront_distribution_id" {
@@ -45,16 +95,6 @@ output "certificate_validation_records" {
 
 output "github_actions_role_arn" {
   value = module.static_site.github_actions_role_arn
-}
-
-module "cognito" {
-  source      = "../../modules/cognito"
-  environment = "test"
-  tags = {
-    Project     = "birdz"
-    Environment = "test"
-    ManagedBy   = "terraform"
-  }
 }
 
 output "cognito_user_pool_id" {
