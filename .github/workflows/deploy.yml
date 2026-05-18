@@ -49,6 +49,10 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -77,6 +81,10 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist/
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -107,6 +115,10 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -135,6 +147,10 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist/
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:

@@ -46,3 +46,21 @@ output "certificate_validation_records" {
 output "github_actions_role_arn" {
   value = module.static_site.github_actions_role_arn
 }
+
+module "cognito" {
+  source      = "../../modules/cognito"
+  environment = "prod"
+  tags = {
+    Project     = "birdz"
+    Environment = "prod"
+    ManagedBy   = "terraform"
+  }
+}
+
+output "cognito_user_pool_id" {
+  value = module.cognito.user_pool_id
+}
+
+output "cognito_client_id" {
+  value = module.cognito.client_id
+}
