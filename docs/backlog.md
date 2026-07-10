@@ -11,7 +11,7 @@
 | ~~P1~~ | ~~Hint scoring misleading~~ | ~~Done: potential score drops on hint reveal; regression-tested~~ |
 | ~~P2~~ | ~~Game progress is localStorage only~~ | ~~Done 2026-07-10 (birdzReact PR #5): progress persists to DynamoDB, localStorage is the offline cache~~ |
 | P2 | Silent error handling | Affects persistence.ts, biomeDetector.ts, exifExtractor.ts |
-| P2 | Leaflet loaded from CDN via window.L | No fallback if load fails |
+| ~~P2~~ | ~~Leaflet loaded from CDN via window.L~~ | ~~Done 2026-07-10 (birdzReact PR #8): bundled from the npm dependency, unpkg tags removed, marker icons inlined~~ |
 | P2 | Weak password validation | 4-char minimum, no complexity requirements |
 
 ## DevOps / Infrastructure
