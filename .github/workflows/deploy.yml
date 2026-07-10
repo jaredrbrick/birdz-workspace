@@ -88,7 +88,7 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
-        run: curl -sf --retry 5 --retry-delay 10 https://dev.birdz.3569081.xyz/ -o /dev/null
+        run: curl -sf --retry 5 --retry-delay 10 https://dev.birdzgame.com/ -o /dev/null
 
   deploy-test:
     name: Deploy → test
@@ -131,7 +131,7 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
-        run: curl -sf --retry 5 --retry-delay 10 https://test.birdz.3569081.xyz/ -o /dev/null
+        run: curl -sf --retry 5 --retry-delay 10 https://test.birdzgame.com/ -o /dev/null
 
   deploy-staging:
     name: Deploy → staging
@@ -174,7 +174,7 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
-        run: curl -sf --retry 5 --retry-delay 10 https://staging.birdz.3569081.xyz/ -o /dev/null
+        run: curl -sf --retry 5 --retry-delay 10 https://staging.birdzgame.com/ -o /dev/null
 
   deploy-prod:
     name: Deploy → prod
@@ -217,4 +217,4 @@ jobs:
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
-        run: curl -sf --retry 5 --retry-delay 10 https://birdz.3569081.xyz/ -o /dev/null
+        run: curl -sf --retry 5 --retry-delay 10 https://birdzgame.com/ -o /dev/null

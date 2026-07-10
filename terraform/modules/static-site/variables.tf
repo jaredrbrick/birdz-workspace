@@ -19,6 +19,11 @@ variable "tags" {
   description = "Tags applied to all resources"
 }
 
+variable "cloudflare_zone_id" {
+  type        = string
+  description = "Cloudflare zone that hosts DNS for var.domain (site CNAME + ACM validation records)"
+}
+
 variable "github_sub_claim" {
   type        = string
   description = "GitHub Actions OIDC sub claim allowed to assume the deploy role (e.g., repo:owner/repo:ref:refs/heads/main)"
