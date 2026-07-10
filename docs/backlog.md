@@ -5,7 +5,7 @@
 | Priority | Issue | Notes |
 |----------|-------|-------|
 | ~~P0~~ | ~~Poor mobile layout~~ | ~~Done 2026-07-10 (birdzReact PR #4): bottom sheets, navbar tightening, dvh shell; verified 320–1280px~~ |
-| P0 | Biome detection can fail silently | Nominatim + Overpass with no retry; falls back to heuristics without telling user; Overpass returning 504 in production |
+| ~~P0~~ | ~~Biome detection can fail silently~~ | ~~Done 2026-07-10 (birdzReact PR #6): status checks + retry + Overpass mirror, visible fallback warning, ?debug=1 trace, and a device-geolocation button (iPhone photo uploads lose GPS EXIF)~~ |
 | ~~P0~~ | ~~Auth is localStorage only~~ | ~~Done: real Cognito SRP auth in useAuthStore, pre-signup Lambda auto-confirms~~ |
 | P1 | No audio playback | Birds have call/song descriptions but nothing plays; ActiveCallBanner shows ♪ but is silent |
 | ~~P1~~ | ~~Hint scoring misleading~~ | ~~Done: potential score drops on hint reveal; regression-tested~~ |
