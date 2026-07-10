@@ -9,11 +9,25 @@ terraform {
       source  = "hashicorp/archive"
       version = "~> 2.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
   }
 }
 
 provider "aws" {
   region = "us-east-1"
+}
+
+# Auth via CLOUDFLARE_API_TOKEN env var (GitHub secret, scoped to the
+# birdzgame.com zone), exported in terraform.yml
+provider "cloudflare" {}
+
+data "cloudflare_zone" "birdzgame" {
+  filter = {
+    name = "birdzgame.com"
+  }
 }
 
 # github provider removed: deploy config now flows through SSM Parameter
@@ -25,8 +39,9 @@ module "static_site" {
   source = "../../modules/static-site"
 
   environment = "prod"
-  domain      = "birdz.3569081.xyz"
+  domain      = "birdzgame.com"
   bucket_name      = "birdz-prod-site"
+  cloudflare_zone_id = data.cloudflare_zone.birdzgame.zone_id
   github_sub_claim = "repo:jaredrbrick/birdz-workspace:environment:prod"
 
   tags = {
@@ -46,10 +61,6 @@ output "cloudfront_domain_name" {
 
 output "s3_bucket_name" {
   value = module.static_site.s3_bucket_name
-}
-
-output "certificate_validation_records" {
-  value = module.static_site.certificate_validation_records
 }
 
 output "github_actions_role_arn" {
