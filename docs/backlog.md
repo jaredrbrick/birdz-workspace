@@ -9,7 +9,7 @@
 | ~~P0~~ | ~~Auth is localStorage only~~ | ~~Done: real Cognito SRP auth in useAuthStore, pre-signup Lambda auto-confirms~~ |
 | P1 | No audio playback | Birds have call/song descriptions but nothing plays; ActiveCallBanner shows ♪ but is silent |
 | ~~P1~~ | ~~Hint scoring misleading~~ | ~~Done: potential score drops on hint reveal; regression-tested~~ |
-| P2 | Game progress is localStorage only | Lost if browser data cleared |
+| ~~P2~~ | ~~Game progress is localStorage only~~ | ~~Done 2026-07-10 (birdzReact PR #5): progress persists to DynamoDB, localStorage is the offline cache~~ |
 | P2 | Silent error handling | Affects persistence.ts, biomeDetector.ts, exifExtractor.ts |
 | P2 | Leaflet loaded from CDN via window.L | No fallback if load fails |
 | P2 | Weak password validation | 4-char minimum, no complexity requirements |
@@ -20,7 +20,7 @@
 |----------|-------|-------|
 | ~~P0~~ | ~~No devops architecture defined~~ | ~~Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments~~ |
 | ~~P0~~ | ~~Migrate hosting to AWS~~ | ~~All four environments live on S3 + CloudFront~~ |
-| P0 | Migrate domains to birdzgame.com | Domain purchased 2026-07-10 (Spaceship). Add zone to Cloudflare, manage DNS with Terraform cloudflare provider (env CNAMEs + ACM validation records — removes today's manual validation step), cut CloudFront/ACM over from birdz.3569081.xyz. Gates AdSense. |
+| ~~P0~~ | ~~Migrate domains to birdzgame.com~~ | ~~Done 2026-07-10: all four envs live on birdzgame.com, DNS + ACM validation fully Terraform-managed (cloudflare provider). AdSense unblocked.~~ |
 
 ## Monetization
 
@@ -35,7 +35,7 @@
 | ~~P0~~ | ~~CloudFront + S3~~ | ~~Provisioned per environment; deploys via GitHub Actions + OIDC~~ |
 | P1 | S3 | Host bird call audio files; wire up playback (also fixes silent audio bug) |
 | ~~P1~~ | ~~Cognito~~ | ~~Done: infra provisioned per env and app uses real Cognito SRP auth~~ |
-| P1 | DynamoDB | Persist game progress server-side — infra live in all four envs (tables, identity pools, row-scoped roles); app integration remains (persistence-design.md step 4) |
+| ~~P1~~ | ~~DynamoDB~~ | ~~Done 2026-07-10 (birdzReact PR #5): app syncs progress via Cognito Identity Pool credentials, one PROGRESS item per user, localStorage offline fallback~~ |
 
 ## Testing
 
