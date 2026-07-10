@@ -80,3 +80,51 @@ resource "aws_cognito_user_pool_client" "web" {
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
 }
+
+# Identity pool: exchanges user-pool sessions for temporary AWS credentials
+# so the browser can access row-scoped resources (see docs/persistence-design.md)
+resource "aws_cognito_identity_pool" "main" {
+  identity_pool_name               = "birdz-${var.environment}"
+  allow_unauthenticated_identities = false
+
+  cognito_identity_providers {
+    client_id               = aws_cognito_user_pool_client.web.id
+    provider_name           = aws_cognito_user_pool.main.endpoint
+    server_side_token_check = false
+  }
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "authenticated_trust" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = [aws_cognito_identity_pool.main.id]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["authenticated"]
+    }
+  }
+}
+
+resource "aws_iam_role" "authenticated" {
+  name               = "birdz-${var.environment}-authenticated"
+  assume_role_policy = data.aws_iam_policy_document.authenticated_trust.json
+  tags               = var.tags
+}
+
+resource "aws_cognito_identity_pool_roles_attachment" "main" {
+  identity_pool_id = aws_cognito_identity_pool.main.id
+  roles = {
+    authenticated = aws_iam_role.authenticated.arn
+  }
+}

@@ -85,6 +85,8 @@ module "deploy_config" {
     cf-distribution-id   = module.static_site.cloudfront_distribution_id
     cognito-user-pool-id = module.cognito.user_pool_id
     cognito-client-id    = module.cognito.client_id
+    identity-pool-id     = module.cognito.identity_pool_id
+    game-data-table      = module.game_data.table_name
   }
   tags = {
     Project     = "birdz"
@@ -114,4 +116,17 @@ removed {
 removed {
   from = github_actions_environment_secret.cognito_client_id
   lifecycle { destroy = false }
+}
+
+module "game_data" {
+  source      = "../../modules/game-data"
+  environment = "test"
+
+  identity_pool_authenticated_role_name = module.cognito.authenticated_role_name
+
+  tags = {
+    Project     = "birdz"
+    Environment = "test"
+    ManagedBy   = "terraform"
+  }
 }
