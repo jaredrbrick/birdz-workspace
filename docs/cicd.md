@@ -199,23 +199,24 @@ Proxy status: **DNS only** (gray cloud) on all records.
 
 ### Step 3 — Populate GitHub Actions secrets
 
-Secrets are stored per GitHub Environment (`Settings → Environments → <env> → Environment secrets`), not as repository secrets. This scopes each secret to the job that needs it.
+Almost all deploy-time config flows through **SSM Parameter Store**, written by Terraform (`module.deploy_config`) under `/birdz/<env>/deploy/*`:
 
-After applying each environment, retrieve its values:
+| SSM parameter | Used for |
+|---------------|----------|
+| `/birdz/<env>/deploy/cf-distribution-id` | CloudFront cache invalidation |
+| `/birdz/<env>/deploy/cognito-user-pool-id` | Runtime `config.json` |
+| `/birdz/<env>/deploy/cognito-client-id` | Runtime `config.json` |
 
-```bash
-terraform output github_actions_role_arn    # → AWS_ROLE_ARN
-terraform output cloudfront_distribution_id # → CF_DISTRIBUTION_ID
-```
+The deploy jobs assume the OIDC role first, then read these parameters — no secrets needed for them.
 
-Add two secrets to **each** GitHub Environment using the same names:
+Only two secrets are managed manually:
 
-| Secret | Value |
-|--------|-------|
-| `AWS_ROLE_ARN` | `github_actions_role_arn` output from that environment |
-| `CF_DISTRIBUTION_ID` | `cloudfront_distribution_id` output from that environment |
+| Secret | Scope | Value |
+|--------|-------|-------|
+| `AWS_ROLE_ARN` | per GitHub Environment | `github_actions_role_arn` output from that environment. This is the OIDC bootstrap — it can't come from SSM because the job needs it *before* it has AWS credentials. Safe to set once: the role name `birdz-<env>-github-deploy` is static, so the ARN never changes. |
+| `SUBMODULE_SSH_KEY` | repository | Read-only deploy key registered on the `birdzReact` repo, used to check out the private submodule. |
 
-Repeat for `dev`, `test`, `staging`, and `prod`.
+Set `AWS_ROLE_ARN` in each GitHub Environment (`Settings → Environments → <env> → Environment secrets`) after the first apply of that environment.
 
 ### Step 4 — Configure the prod GitHub Environment
 
