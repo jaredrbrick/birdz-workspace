@@ -98,24 +98,26 @@ The old version continues to be served from CloudFront edge caches until the inv
 
 ## DNS
 
-DNS is managed through **Cloudflare** (free tier). Each CloudFront distribution gets a CNAME record in Cloudflare pointing to its `*.cloudfront.net` domain.
+DNS is managed through **Cloudflare** (free tier) and provisioned by **Terraform** (`cloudflare` provider `~> 5.0`). The static-site module creates each environment's CNAME to its `*.cloudfront.net` domain and the ACM certificate validation records, so certificate issuance is fully automatic.
 
-**Important:** Cloudflare proxy must be set to **DNS only** (gray cloud) for these records. Enabling the Cloudflare proxy (orange cloud) would create a double-CDN situation and cause TLS conflicts between Cloudflare and ACM.
+**Important:** all records are **DNS only** (`proxied = false`). Enabling the Cloudflare proxy (orange cloud) would create a double-CDN situation and cause TLS conflicts between Cloudflare and ACM. The prod apex record relies on Cloudflare's automatic CNAME flattening.
+
+The provider authenticates via the `CLOUDFLARE_API_TOKEN` GitHub secret (scoped to DNS edit on the `birdzgame.com` zone only), exported in `terraform.yml`.
 
 Route 53 was considered but not chosen — Cloudflare's free DNS vs Route 53's $0.50/month/zone isn't worth the cost for convenience.
 
 ### Domain
 
-`birdz.3569081.xyz` — each environment gets a subdomain:
+`birdzgame.com` (registered at Spaceship, nameservers on Cloudflare) — each environment gets a subdomain:
 
 | Environment | Domain |
 |-------------|--------|
-| `dev` | `dev.birdz.3569081.xyz` |
-| `test` | `test.birdz.3569081.xyz` |
-| `staging` | `staging.birdz.3569081.xyz` |
-| `prod` | `birdz.3569081.xyz` |
+| `dev` | `dev.birdzgame.com` |
+| `test` | `test.birdzgame.com` |
+| `staging` | `staging.birdzgame.com` |
+| `prod` | `birdzgame.com` |
 
-Cloudflare DNS records are managed manually (not via Terraform) since the Cloudflare provider would require an API token as an additional secret.
+**Gotcha:** when a zone is first added to Cloudflare, its record scan may import parking A/AAAA records from the registrar. These conflict with Terraform's CNAMEs (Cloudflare error 81053) — delete them from the dashboard before the first apply.
 
 ## AWS Region
 
@@ -129,7 +131,7 @@ All infrastructure: `us-east-1`. CloudFront is a global service and handles geog
 
 - AWS CLI configured with credentials that have admin-level access
 - Terraform >= 1.6 installed
-- Access to the Cloudflare dashboard for `3569081.xyz`
+- A Cloudflare API token with DNS edit on the `birdzgame.com` zone (exported as `CLOUDFLARE_API_TOKEN`)
 
 ### Step 1 — Bootstrap the remote backend
 
@@ -145,38 +147,13 @@ terraform apply
 
 Repeat for `dev`, `test`, `staging`, and `prod` in that order.
 
-#### 2a. ACM certificate (first apply, targeted)
-
-ACM certificate validation requires DNS records in Cloudflare before the CloudFront distribution can be created. Apply the certificate resource first so you can read the validation records from state:
-
 ```bash
 cd terraform/environments/dev   # repeat for test, staging, prod
 terraform init
-terraform apply -target=module.static_site.aws_acm_certificate.site
-```
-
-#### 2b. Add DNS validation records to Cloudflare
-
-Read the required CNAME records from state:
-
-```bash
-terraform output certificate_validation_records
-```
-
-In the Cloudflare dashboard, add each record to `3569081.xyz`:
-- Type: `CNAME`
-- Proxy status: **DNS only** (gray cloud)
-- Name/Value: as shown in the output
-
-Wait for ACM to show the certificate as `Issued` (usually 5–15 minutes).
-
-#### 2c. Full apply
-
-```bash
 terraform apply
 ```
 
-This creates the CloudFront distribution, OAC, S3 bucket policy, and IAM deploy role.
+A single apply handles the whole chain: ACM certificate → Cloudflare validation records → validation wait → CloudFront distribution (plus OAC, S3 bucket policy, IAM deploy role, and the site CNAME). No targeted applies or manual DNS steps are needed.
 
 #### 2d. Add Cloudflare CNAME for the environment domain
 
@@ -224,4 +201,4 @@ In the GitHub repository (`Settings → Environments → prod`), add yourself as
 
 ### Step 5 — Verify
 
-Push to `main`. The `deploy.yml` workflow should build, test, and deploy to the dev environment automatically. Check `dev.birdz.3569081.xyz` once the run completes.
+Push to `main`. The `deploy.yml` workflow should build, test, and deploy to the dev environment automatically. Check `dev.birdzgame.com` once the run completes.

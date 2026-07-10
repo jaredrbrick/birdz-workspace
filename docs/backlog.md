@@ -20,7 +20,7 @@
 |----------|-------|-------|
 | ~~P0~~ | ~~No devops architecture defined~~ | ~~Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments~~ |
 | ~~P0~~ | ~~Migrate hosting to AWS~~ | ~~All four environments live on S3 + CloudFront~~ |
-| P0 | Migrate domains to birdzgame.com | Domain purchased 2026-07-10 (Spaceship). Add zone to Cloudflare, manage DNS with Terraform cloudflare provider (env CNAMEs + ACM validation records — removes today's manual validation step), cut CloudFront/ACM over from birdz.3569081.xyz. Gates AdSense. |
+| ~~P0~~ | ~~Migrate domains to birdzgame.com~~ | ~~Done 2026-07-10: all four envs live on birdzgame.com, DNS + ACM validation fully Terraform-managed (cloudflare provider). AdSense unblocked.~~ |
 
 ## Monetization
 
