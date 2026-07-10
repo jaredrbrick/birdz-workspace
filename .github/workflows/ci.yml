@@ -13,9 +13,21 @@ jobs:
         working-directory: birdzReact
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          token: ${{ secrets.PAT }}
+
+      # birdzReact is a private submodule; fetch it over SSH with a
+      # read-only deploy key so no expiring token is involved
+      - name: Checkout birdzReact submodule
+        working-directory: ${{ github.workspace }}
+        env:
+          SSH_KEY: ${{ secrets.SUBMODULE_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/submodule_key
+          chmod 600 ~/.ssh/submodule_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global core.sshCommand "ssh -i ~/.ssh/submodule_key -o IdentitiesOnly=yes"
+          git config --global url."git@github.com:jaredrbrick/".insteadOf "https://github.com/jaredrbrick/"
+          git submodule update --init
 
       - uses: actions/setup-node@v4
         with:

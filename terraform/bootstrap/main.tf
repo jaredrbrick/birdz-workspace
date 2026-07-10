@@ -67,6 +67,48 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 }
 
+# Broad-privilege role used by the terraform.yml workflow to apply infrastructure changes.
+# Scoped to specific branches via OIDC — no long-lived credentials stored anywhere.
+data "aws_iam_policy_document" "terraform_trust" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.github_actions.arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = [
+        "repo:jaredrbrick/birdz-workspace:ref:refs/heads/main",
+        "repo:jaredrbrick/birdz-workspace:ref:refs/heads/test",
+        "repo:jaredrbrick/birdz-workspace:ref:refs/heads/staging",
+        "repo:jaredrbrick/birdz-workspace:ref:refs/heads/prod",
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role" "terraform" {
+  name               = "birdz-terraform-apply"
+  assume_role_policy = data.aws_iam_policy_document.terraform_trust.json
+
+  tags = {
+    Project   = "birdz"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_admin" {
+  role       = aws_iam_role.terraform.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
 # GitHub Actions OIDC provider — created once per AWS account, shared by all environments.
 # Allows GitHub Actions to assume IAM roles without storing long-lived credentials.
 resource "aws_iam_openid_connect_provider" "github_actions" {

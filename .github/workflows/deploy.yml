@@ -3,6 +3,7 @@ name: Deploy
 on:
   push:
     branches: [main, test, staging, prod]
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -13,9 +14,21 @@ jobs:
         working-directory: birdzReact
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          token: ${{ secrets.PAT }}
+
+      # birdzReact is a private submodule; fetch it over SSH with a
+      # read-only deploy key so no expiring token is involved
+      - name: Checkout birdzReact submodule
+        working-directory: ${{ github.workspace }}
+        env:
+          SSH_KEY: ${{ secrets.SUBMODULE_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/submodule_key
+          chmod 600 ~/.ssh/submodule_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global core.sshCommand "ssh -i ~/.ssh/submodule_key -o IdentitiesOnly=yes"
+          git config --global url."git@github.com:jaredrbrick/".insteadOf "https://github.com/jaredrbrick/"
+          git submodule update --init
 
       - uses: actions/setup-node@v4
         with:
@@ -54,11 +67,25 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/dev/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
+
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-dev-site --delete
+        run: aws s3 sync dist/ s3://birdz-dev-site --delete --exclude "audio/*"
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://dev.birdz.3569081.xyz/ -o /dev/null
@@ -83,11 +110,25 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/test/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
+
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-test-site --delete
+        run: aws s3 sync dist/ s3://birdz-test-site --delete --exclude "audio/*"
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://test.birdz.3569081.xyz/ -o /dev/null
@@ -112,11 +153,25 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/staging/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
+
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-staging-site --delete
+        run: aws s3 sync dist/ s3://birdz-staging-site --delete --exclude "audio/*"
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://staging.birdz.3569081.xyz/ -o /dev/null
@@ -141,11 +196,25 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/prod/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
+
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-prod-site --delete
+        run: aws s3 sync dist/ s3://birdz-prod-site --delete --exclude "audio/*"
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://birdz.3569081.xyz/ -o /dev/null
