@@ -8,6 +8,10 @@ on:
       - 'terraform/modules/**'
   workflow_dispatch:
 
+env:
+  # Cloudflare provider auth — token scoped to the birdzgame.com zone (DNS edit only)
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
 jobs:
   terraform-dev:
     name: Apply → dev

@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "site" {
   bucket = var.bucket_name
   tags   = var.tags
@@ -66,13 +75,26 @@ resource "aws_acm_certificate" "site" {
   }
 }
 
-# First apply in a new environment requires a two-step process:
-#   1. terraform apply -target=aws_acm_certificate.site
-#   2. terraform output certificate_validation_records  → add CNAMEs to Cloudflare
-#   3. terraform apply  (continues once ACM sees the DNS records)
+resource "cloudflare_dns_record" "cert_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.site.domain_validation_options : dvo.domain_name => {
+      name  = dvo.resource_record_name
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  }
+
+  zone_id = var.cloudflare_zone_id
+  name    = trimsuffix(each.value.name, ".")
+  type    = each.value.type
+  content = each.value.value
+  ttl     = 60
+  proxied = false
+}
+
 resource "aws_acm_certificate_validation" "site" {
-  certificate_arn = aws_acm_certificate.site.arn
-  # validation_record_fqdns omitted — DNS records are added manually in Cloudflare
+  certificate_arn         = aws_acm_certificate.site.arn
+  validation_record_fqdns = [for record in cloudflare_dns_record.cert_validation : record.name]
 }
 
 data "aws_cloudfront_cache_policy" "caching_optimized" {
@@ -128,6 +150,18 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   depends_on = [aws_acm_certificate_validation.site]
+}
+
+# DNS-only (proxied = false): Cloudflare's proxy in front of CloudFront would
+# double-CDN every request and break cache invalidation assumptions.
+# CNAME at the zone apex (prod) relies on Cloudflare's CNAME flattening.
+resource "cloudflare_dns_record" "site" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.domain
+  type    = "CNAME"
+  content = aws_cloudfront_distribution.site.domain_name
+  ttl     = 1
+  proxied = false
 }
 
 data "aws_caller_identity" "current" {}
