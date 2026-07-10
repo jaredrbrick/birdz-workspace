@@ -26,7 +26,7 @@
 
 | Priority | Feature | Notes |
 |----------|---------|-------|
-| P1 | Biome/ecoregion overhaul | Replace the six hard-coded biomes with real-world ecoregions (richer per-region bird pools, better detection granularity). Referenced in HANDOFF-2026-07-09 as "P1 ecoregion redesign" but the plan itself was never written down — needs a design doc (docs/biome-redesign.md) before implementation. May supersede parts of the biome-detection heuristics. |
+| P1 | Biome/ecoregion overhaul | Design doc drafted 2026-07-10 (docs/biome-redesign.md): keep six biome classes for mechanics, add data-driven ecoregion identity layer (names + bird pools), phased. **Blocked on Jared's review** — three open questions in the doc. |
 
 ## Monetization
 
