@@ -12,7 +12,7 @@
 | ~~P2~~ | ~~Game progress is localStorage only~~ | ~~Done 2026-07-10 (birdzReact PR #5): progress persists to DynamoDB, localStorage is the offline cache~~ |
 | P2 | Silent error handling | Affects persistence.ts, biomeDetector.ts, exifExtractor.ts |
 | ~~P2~~ | ~~Leaflet loaded from CDN via window.L~~ | ~~Done 2026-07-10 (birdzReact PR #8): bundled from the npm dependency, unpkg tags removed, marker icons inlined~~ |
-| P2 | Weak password validation | 4-char minimum, no complexity requirements |
+| ~~P2~~ | ~~Weak password validation~~ | ~~Stale row — already fixed: Cognito pool policy enforces 8+ chars with upper/lower/number (terraform cognito module), and RegisterForm validates the same client-side~~ |
 
 ## DevOps / Infrastructure
 
