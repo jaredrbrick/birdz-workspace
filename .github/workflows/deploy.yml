@@ -26,8 +26,8 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/submodule_key
           chmod 600 ~/.ssh/submodule_key
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config core.sshCommand "ssh -i ~/.ssh/submodule_key -o IdentitiesOnly=yes"
-          git config url."git@github.com:jaredrbrick/".insteadOf "https://github.com/jaredrbrick/"
+          git config --global core.sshCommand "ssh -i ~/.ssh/submodule_key -o IdentitiesOnly=yes"
+          git config --global url."git@github.com:jaredrbrick/".insteadOf "https://github.com/jaredrbrick/"
           git submodule update --init
 
       - uses: actions/setup-node@v4
