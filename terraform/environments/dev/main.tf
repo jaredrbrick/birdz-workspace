@@ -20,10 +20,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "github" {
-  owner = "jaredrbrick"
-  # reads GITHUB_TOKEN from environment
-}
+# github provider removed: deploy config now flows through SSM Parameter
+# Store (module.deploy_config); AWS_ROLE_ARN remains a manually-managed
+# GitHub environment secret since the role name — and therefore its ARN —
+# is static
 
 module "static_site" {
   source = "../../modules/static-site"
@@ -78,30 +78,40 @@ output "cognito_client_id" {
   value = module.cognito.client_id
 }
 
-resource "github_actions_environment_secret" "aws_role_arn" {
-  repository      = "birdz-workspace"
-  environment     = "dev"
-  secret_name     = "AWS_ROLE_ARN"
-  plaintext_value = module.static_site.github_actions_role_arn
+module "deploy_config" {
+  source      = "../../modules/deploy-config"
+  environment = "dev"
+  values = {
+    cf-distribution-id   = module.static_site.cloudfront_distribution_id
+    cognito-user-pool-id = module.cognito.user_pool_id
+    cognito-client-id    = module.cognito.client_id
+  }
+  tags = {
+    Project     = "birdz"
+    Environment = "dev"
+    ManagedBy   = "terraform"
+  }
 }
 
-resource "github_actions_environment_secret" "cf_distribution_id" {
-  repository      = "birdz-workspace"
-  environment     = "dev"
-  secret_name     = "CF_DISTRIBUTION_ID"
-  plaintext_value = module.static_site.cloudfront_distribution_id
+# Forget (do not destroy) the GitHub secrets Terraform used to manage —
+# destroying them would require the expired PAT, and AWS_ROLE_ARN is
+# still read by deploy.yml as the OIDC bootstrap
+removed {
+  from = github_actions_environment_secret.aws_role_arn
+  lifecycle { destroy = false }
 }
 
-resource "github_actions_environment_secret" "cognito_user_pool_id" {
-  repository      = "birdz-workspace"
-  environment     = "dev"
-  secret_name     = "COGNITO_USER_POOL_ID"
-  plaintext_value = module.cognito.user_pool_id
+removed {
+  from = github_actions_environment_secret.cf_distribution_id
+  lifecycle { destroy = false }
 }
 
-resource "github_actions_environment_secret" "cognito_client_id" {
-  repository      = "birdz-workspace"
-  environment     = "dev"
-  secret_name     = "COGNITO_CLIENT_ID"
-  plaintext_value = module.cognito.client_id
+removed {
+  from = github_actions_environment_secret.cognito_user_pool_id
+  lifecycle { destroy = false }
+}
+
+removed {
+  from = github_actions_environment_secret.cognito_client_id
+  lifecycle { destroy = false }
 }
