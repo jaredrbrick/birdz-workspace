@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
-    }
     archive = {
       source  = "hashicorp/archive"
       version = "~> 2.0"
@@ -93,29 +89,6 @@ module "deploy_config" {
     Environment = "test"
     ManagedBy   = "terraform"
   }
-}
-
-# Forget (do not destroy) the GitHub secrets Terraform used to manage —
-# destroying them would require the expired PAT, and AWS_ROLE_ARN is
-# still read by deploy.yml as the OIDC bootstrap
-removed {
-  from = github_actions_environment_secret.aws_role_arn
-  lifecycle { destroy = false }
-}
-
-removed {
-  from = github_actions_environment_secret.cf_distribution_id
-  lifecycle { destroy = false }
-}
-
-removed {
-  from = github_actions_environment_secret.cognito_user_pool_id
-  lifecycle { destroy = false }
-}
-
-removed {
-  from = github_actions_environment_secret.cognito_client_id
-  lifecycle { destroy = false }
 }
 
 module "game_data" {
