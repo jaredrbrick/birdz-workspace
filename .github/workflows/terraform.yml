@@ -31,8 +31,6 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
 
   terraform-test:
     name: Apply → test
@@ -56,8 +54,6 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
 
   terraform-staging:
     name: Apply → staging
@@ -81,8 +77,6 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
 
   terraform-prod:
     name: Apply → prod
@@ -106,5 +100,3 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}

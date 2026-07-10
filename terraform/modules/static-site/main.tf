@@ -171,6 +171,10 @@ data "aws_iam_policy_document" "github_actions_deploy" {
     actions   = ["cloudfront:CreateInvalidation"]
     resources = [aws_cloudfront_distribution.site.arn]
   }
+  statement {
+    actions   = ["ssm:GetParameter", "ssm:GetParameters"]
+    resources = ["arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/birdz/${var.environment}/deploy/*"]
+  }
 }
 
 resource "aws_iam_role_policy" "github_actions_deploy" {
