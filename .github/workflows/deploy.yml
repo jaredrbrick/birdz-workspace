@@ -74,10 +74,12 @@ jobs:
           echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
           echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
           echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
 
       - name: Write runtime config
         run: |
-          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-dev-site --delete
@@ -115,10 +117,12 @@ jobs:
           echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
           echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
           echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
 
       - name: Write runtime config
         run: |
-          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-test-site --delete
@@ -156,10 +160,12 @@ jobs:
           echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
           echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
           echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
 
       - name: Write runtime config
         run: |
-          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-staging-site --delete
@@ -197,10 +203,12 @@ jobs:
           echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
           echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
           echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+          echo "identity_pool_id=$(get identity-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "game_data_table=$(get game-data-table)" >> "$GITHUB_OUTPUT"
 
       - name: Write runtime config
         run: |
-          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-prod-site --delete

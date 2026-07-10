@@ -48,9 +48,9 @@ A small REST/HTTP API (authorized by the existing user pool's JWTs) in front of 
 
 Note: with Option A the partition key is the Cognito **identity ID** (from the identity pool), not the user pool `sub`. If we later migrate to Option B we can keep keying by identity ID or migrate keys then.
 
-## Rollout sketch (when approved)
+## Rollout status
 
-1. Add an `aws_cognito_identity_pool` (+ authenticated role) to the cognito module, federated from the existing user pool.
-2. Wire `module "game_data"` into each environment, passing the authenticated role name.
-3. Add `game-data-table` to the deploy-config SSM values so `config.json` carries the table name.
-4. birdzReact: on login, exchange the user-pool session for identity-pool credentials; load with one `Query`, save with `PutItem`/`UpdateItem`; keep localStorage as offline cache/fallback.
+1. ~~Add an `aws_cognito_identity_pool` (+ authenticated role) to the cognito module, federated from the existing user pool.~~ Done.
+2. ~~Wire `module "game_data"` into each environment, passing the authenticated role name.~~ Done (prod applies when the prod branch is next promoted).
+3. ~~Add the table name and identity pool ID to the deploy-config SSM values so `config.json` carries them.~~ Done — `config.json` now serves `identityPoolId`, `gameDataTable`, and `region` alongside the user-pool IDs.
+4. **Remaining (birdzReact repo):** on login, exchange the user-pool session for identity-pool credentials; load with one `Query`, save with `PutItem`/`UpdateItem`; keep localStorage as offline cache/fallback. Partition key is the Cognito **identity ID** (`cognito-identity.amazonaws.com:sub`), enforced by IAM.
