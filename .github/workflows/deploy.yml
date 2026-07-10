@@ -62,20 +62,28 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
-      - name: Write runtime config
-        run: |
-          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
-
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/dev/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-dev-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://dev.birdz.3569081.xyz/ -o /dev/null
@@ -95,20 +103,28 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
-      - name: Write runtime config
-        run: |
-          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
-
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/test/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-test-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://test.birdz.3569081.xyz/ -o /dev/null
@@ -128,20 +144,28 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
-      - name: Write runtime config
-        run: |
-          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
-
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/staging/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-staging-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://staging.birdz.3569081.xyz/ -o /dev/null
@@ -161,20 +185,28 @@ jobs:
           name: dist-${{ github.sha }}
           path: dist/
 
-      - name: Write runtime config
-        run: |
-          echo '{"userPoolId":"${{ secrets.COGNITO_USER_POOL_ID }}","clientId":"${{ secrets.COGNITO_CLIENT_ID }}"}' > dist/config.json
-
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: Fetch deploy config from SSM
+        id: config
+        run: |
+          get() { aws ssm get-parameter --name "/birdz/prod/deploy/$1" --query Parameter.Value --output text; }
+          echo "cf_distribution_id=$(get cf-distribution-id)" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$(get cognito-user-pool-id)" >> "$GITHUB_OUTPUT"
+          echo "client_id=$(get cognito-client-id)" >> "$GITHUB_OUTPUT"
+
+      - name: Write runtime config
+        run: |
+          echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}"}' > dist/config.json
+
       - name: Sync to S3
         run: aws s3 sync dist/ s3://birdz-prod-site --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
 
       - name: Smoke test
         run: curl -sf --retry 5 --retry-delay 10 https://birdz.3569081.xyz/ -o /dev/null
