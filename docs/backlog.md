@@ -7,12 +7,11 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Bird roster batches 2+ | 30 birds now; target ~60 in 4–6-bird PRs, thinnest ecoregion pools first ("a ton more birds" — Jared) |
-| P1 | Ecoregion phase 2: per-region bird pools | Birds gain `regions` tags; spawner prefers the region pool. Pairs naturally with roster batches |
+| P1 | Bird roster batches 3+ | 36 birds now; target ~60. Batch 3 should include Great Basin sagebrush specialists (sage thrasher, sage sparrow — its pool is thinnest at 1) |
 | P1 | AdSense | ads.txt live at birdzgame.com/ads.txt (2026-07-11, PR #14). **Awaiting Google's review** (days–weeks); ad placements wire up after approval |
 | P2 | PvP | Needs the server-side API path first (persistence-design.md option B: API Gateway + Lambda). Design discussion before any code |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
-| P2 | 3 birds still silent | cactus_wren, gambels_quail, brown_pelican — zero commercially-safe recordings exist on xeno-canto or Commons today; recheck occasionally |
+| P2 | 6 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher — zero commercially-safe recordings anywhere today; recheck occasionally. mountain_bluebird has audio but low quality (only non-NC option) — upgrade when possible |
 
 ## Shipped (archive)
 
@@ -32,6 +31,7 @@ archived at the bottom._
 - Base building phase B (#13): grounded visitors — catered birds land, hop, and wander near their items; tap for name card (or ??? + identify nudge)
 - ads.txt (#14): Jared's AdSense publisher ID served at the domain root
 - Base building phase C (#15): 💭 wants, 0–5 relationship hearts, regulars with seed gifts — **base building complete (all 3 phases)**
+- Roster batch 2 + ecoregion phase 2 (#16): 6 region-flavored birds (36 total, 30 with audio) and region-gated pools — Pacific vs Atlantic coasts, Sonoran vs Mojave vs Chihuahuan deserts finally feel different
 
 **Earlier (2026-05 → 2026-07-09):**
 
