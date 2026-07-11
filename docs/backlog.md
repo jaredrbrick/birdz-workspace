@@ -7,11 +7,11 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Bird roster batches 5+ | 48 birds now; target ~60. Two more ~6-bird batches gets there; spread across whichever pools are thinnest |
+| P1 | Bird roster batches 6+ | 54 birds now; target ~60. One more ~6-bird batch gets there; spread across whichever pools are thinnest |
 | P1 | AdSense | ads.txt live at birdzgame.com/ads.txt (2026-07-11, PR #14). **Awaiting Google's review** (days–weeks); ad placements wire up after approval |
 | P2 | PvP | Needs the server-side API path first (persistence-design.md option B: API Gateway + Lambda). Design discussion before any code |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
-| P2 | 10 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, burrowing_owl, scaled_quail — zero commercially-safe recordings anywhere today; recheck occasionally. mountain_bluebird audio is low quality — upgrade when possible |
+| P2 | 12 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, burrowing_owl, scaled_quail, black_oystercatcher, western_kingbird — zero commercially-safe recordings anywhere today; recheck occasionally. mountain_bluebird audio is low quality — upgrade when possible |
 
 ## Shipped (archive)
 
@@ -34,6 +34,7 @@ archived at the bottom._
 - Roster batch 2 + ecoregion phase 2 (#16): 6 region-flavored birds (36 total, 30 with audio) and region-gated pools — Pacific vs Atlantic coasts, Sonoran vs Mojave vs Chihuahuan deserts finally feel different
 - Roster batch 3 (#17): sagebrush country (Sage Thrasher, Greater Sage-Grouse) + Burrowing Owl, Common Loon, Belted Kingfisher, Common Raven — 42 birds, 33 with audio
 - Roster batch 4 (#18): Appalachian/boreal/Chihuahuan fills — Ruffed Grouse, Canada Jay, Scaled Quail, Pyrrhuloxia, Eastern Towhee, Dark-eyed Junco — 48 birds, 38 with audio
+- Roster batch 5 (#19): eastern/coastal/wetland fills — Carolina Wren, Limpkin, Herring Gull, Black Oystercatcher, Western Kingbird, Prothonotary Warbler — 54 birds, 42 with audio (fills appalachians, everglades, gulf-bayous, great-lakes, pacific-coast, great-plains)
 
 **Earlier (2026-05 → 2026-07-09):**
 
