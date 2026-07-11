@@ -43,15 +43,14 @@ Four pillars, phased so each ships alone:
 - Rewards for high bond: the bird becomes a regular (guaranteed periodic
   visitor), unlocks extra facts/portrait, occasional seed gifts.
 
-## Open questions for Jared
+## Decisions (Jared, 2026-07-10)
 
-1. **Currency**: OK splitting score (lifetime) from seeds (spendable), or
-   should items spend down the existing score?
-2. **Art**: items as emoji/CSS in the current style, or is this the moment for
-   real sprites?
-3. **Scope of relationship**: purely collection/cosmetic, or should high bonds
-   affect gameplay (e.g. easier identification hints for befriended birds)?
-4. Rough catalog size to launch phase A — ~8 items?
+1. **Currency**: split — seeds (spendable, earned per correct ID) + lifetime
+   score (untouched).
+2. **Art**: emoji/CSS for now; real sprites will be commissioned if the
+   project makes money (artist / art director).
+3. **Relationship**: cosmetic/collection only to start.
+4. **Catalog**: 8 items at launch.
 
 ## Dependencies & fit
 
