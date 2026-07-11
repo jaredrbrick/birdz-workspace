@@ -7,11 +7,10 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Base building — phase B: grounded visitors | In flight (birdzReact PR #13): birds land and hop around installed items, tappable mystery/name cards. Design: docs/base-building-design.md |
-| P1 | Base building — phase C: wants + relationships | Request bubbles, 0–5 hearts per species, regular-visitor rewards. Cosmetic-only per decisions in the design doc |
+| P1 | Base building — phase C: wants + relationships | Request bubbles, 0–5 hearts per species, regular-visitor rewards. Cosmetic-only per decisions in the design doc. Phases A+B live |
 | P1 | Bird roster batches 2+ | 30 birds now; target ~60 in 4–6-bird PRs, thinnest ecoregion pools first ("a ton more birds" — Jared) |
 | P1 | Ecoregion phase 2: per-region bird pools | Birds gain `regions` tags; spawner prefers the region pool. Pairs naturally with roster batches |
-| P1 | AdSense | Jared applied 2026-07-11, publisher ID `pub-3891377870003353` received. Next: serve ads.txt at the domain root (in flight), then await Google's review; ad placements after approval |
+| P1 | AdSense | ads.txt live at birdzgame.com/ads.txt (2026-07-11, PR #14). **Awaiting Google's review** (days–weeks); ad placements wire up after approval |
 | P2 | PvP | Needs the server-side API path first (persistence-design.md option B: API Gateway + Lambda). Design discussion before any code |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | 3 birds still silent | cactus_wren, gambels_quail, brown_pelican — zero commercially-safe recordings exist on xeno-canto or Commons today; recheck occasionally |
@@ -28,6 +27,11 @@ archived at the bottom._
 - Ecoregion phase 1 (#10): 18 NA regions, "Pacific Coast" instead of "Atlantic Coast" in California; generic fallbacks elsewhere
 - Roster batch 1 (#11): killdeer, western gull, Steller's jay, white-crowned sparrow, common poorwill, sandhill crane — every biome pool ≥4 birds
 - Base building phase A (#12): 8-item shop, seeds economy (split from score), rare birds gated behind preferred items, catered birds spawn 2×
+
+**2026-07-11:**
+
+- Base building phase B (#13): grounded visitors — catered birds land, hop, and wander near their items; tap for name card (or ??? + identify nudge)
+- ads.txt (#14): Jared's AdSense publisher ID served at the domain root
 
 **Earlier (2026-05 → 2026-07-09):**
 
