@@ -10,9 +10,9 @@
 | ~~P1~~ | ~~No audio playback~~ | ~~Done 2026-07-10 (birdzReact PR #7): banner ♪ + identify-screen Play button play /audio/<birdId>.mp3 with graceful fallback.~~ Remaining: 11 of 24 birds lack recordings (Commons only has OGG for them — needs a xeno-canto API key from Jared or an approved ffmpeg transcode); test/staging/prod bucket uploads await Jared's sign-off (`aws s3 sync s3://birdz-dev-site/audio/ s3://birdz-<env>-site/audio/`) |
 | ~~P1~~ | ~~Hint scoring misleading~~ | ~~Done: potential score drops on hint reveal; regression-tested~~ |
 | ~~P2~~ | ~~Game progress is localStorage only~~ | ~~Done 2026-07-10 (birdzReact PR #5): progress persists to DynamoDB, localStorage is the offline cache~~ |
-| P2 | Silent error handling | Affects persistence.ts, biomeDetector.ts, exifExtractor.ts |
+| ~~P2~~ | ~~Silent error handling~~ | ~~Done 2026-07-10: biomeDetector got UI-level surfacing (PR #6), persistence.ts warns with key on load/save/remove failures (PR #9), exifExtractor already warned + surfaces a user-facing error~~ |
 | ~~P2~~ | ~~Leaflet loaded from CDN via window.L~~ | ~~Done 2026-07-10 (birdzReact PR #8): bundled from the npm dependency, unpkg tags removed, marker icons inlined~~ |
-| P2 | Weak password validation | 4-char minimum, no complexity requirements |
+| ~~P2~~ | ~~Weak password validation~~ | ~~Stale row — already fixed: Cognito pool policy enforces 8+ chars with upper/lower/number (terraform cognito module), and RegisterForm validates the same client-side~~ |
 
 ## DevOps / Infrastructure
 
@@ -47,7 +47,7 @@
 
 | Priority | Feature | Notes |
 |----------|---------|-------|
-| P2 | Code coverage | Add coverage reporting to the Vitest test suite |
+| ~~P2~~ | ~~Code coverage~~ | ~~Done 2026-07-10 (birdzReact PR #9): npm run test:coverage (v8, text-summary + html), runs in CI on every PR; baseline 45% lines, no threshold gate~~ |
 
 ## UX Improvements
 
