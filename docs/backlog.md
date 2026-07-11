@@ -26,7 +26,8 @@
 
 | Priority | Feature | Notes |
 |----------|---------|-------|
-| P1 | Biome/ecoregion overhaul | Design doc drafted 2026-07-10 (docs/biome-redesign.md): keep six biome classes for mechanics, add data-driven ecoregion identity layer (names + bird pools), phased. **Blocked on Jared's review** — three open questions in the doc. |
+| P1 | Biome/ecoregion overhaul | Approved 2026-07-10 (NA-only, cosmetic). Phase 1 (region names) shipped in birdzReact PR #10. Phase 2 (per-region bird pools) pairs with the roster expansion below. |
+| P1 | Expand bird roster ("a ton more birds" — Jared 2026-07-10) | Grow 24 → ~60 in increments of 4–6 per PR, prioritized to give every ecoregion a distinct pool (feeds ecoregion phase 2). Each bird: call/song phonetics + hints + facts + rarity/difficulty, and a recording where sourceable (xeno-canto key would unlock recordings for nearly all — currently 4 of 24 existing birds still lack audio). |
 
 ## Monetization
 
