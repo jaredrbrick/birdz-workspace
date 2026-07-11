@@ -1,60 +1,38 @@
 # Backlog
 
-## Bugs / Broken Features
+_Last groomed: 2026-07-10 (evening). Open items first; everything shipped is
+archived at the bottom._
 
-| Priority | Issue | Notes |
-|----------|-------|-------|
-| ~~P0~~ | ~~Poor mobile layout~~ | ~~Done 2026-07-10 (birdzReact PR #4): bottom sheets, navbar tightening, dvh shell; verified 320–1280px~~ |
-| ~~P0~~ | ~~Biome detection can fail silently~~ | ~~Done 2026-07-10 (birdzReact PR #6): status checks + retry + Overpass mirror, visible fallback warning, ?debug=1 trace, and a device-geolocation button (iPhone photo uploads lose GPS EXIF)~~ |
-| ~~P0~~ | ~~Auth is localStorage only~~ | ~~Done: real Cognito SRP auth in useAuthStore, pre-signup Lambda auto-confirms~~ |
-| ~~P1~~ | ~~No audio playback~~ | ~~Done 2026-07-10 (birdzReact PR #7): banner ♪ + identify-screen Play button play /audio/<birdId>.mp3 with graceful fallback.~~ Remaining: 11 of 24 birds lack recordings (Commons only has OGG for them — needs a xeno-canto API key from Jared or an approved ffmpeg transcode); test/staging/prod bucket uploads await Jared's sign-off (`aws s3 sync s3://birdz-dev-site/audio/ s3://birdz-<env>-site/audio/`) |
-| ~~P1~~ | ~~Hint scoring misleading~~ | ~~Done: potential score drops on hint reveal; regression-tested~~ |
-| ~~P2~~ | ~~Game progress is localStorage only~~ | ~~Done 2026-07-10 (birdzReact PR #5): progress persists to DynamoDB, localStorage is the offline cache~~ |
-| ~~P2~~ | ~~Silent error handling~~ | ~~Done 2026-07-10: biomeDetector got UI-level surfacing (PR #6), persistence.ts warns with key on load/save/remove failures (PR #9), exifExtractor already warned + surfaces a user-facing error~~ |
-| ~~P2~~ | ~~Leaflet loaded from CDN via window.L~~ | ~~Done 2026-07-10 (birdzReact PR #8): bundled from the npm dependency, unpkg tags removed, marker icons inlined~~ |
-| ~~P2~~ | ~~Weak password validation~~ | ~~Stale row — already fixed: Cognito pool policy enforces 8+ chars with upper/lower/number (terraform cognito module), and RegisterForm validates the same client-side~~ |
+## Open
 
-## DevOps / Infrastructure
+| Priority | Item | Status / notes |
+|----------|------|----------------|
+| P1 | Base building — phase B: grounded visitors | In flight (birdzReact PR #13): birds land and hop around installed items, tappable mystery/name cards. Design: docs/base-building-design.md |
+| P1 | Base building — phase C: wants + relationships | Request bubbles, 0–5 hearts per species, regular-visitor rewards. Cosmetic-only per decisions in the design doc |
+| P1 | Bird roster batches 2+ | 30 birds now; target ~60 in 4–6-bird PRs, thinnest ecoregion pools first ("a ton more birds" — Jared) |
+| P1 | Ecoregion phase 2: per-region bird pools | Birds gain `regions` tags; spawner prefers the region pool. Pairs naturally with roster batches |
+| P1 | AdSense | Jared applied 2026-07-11, publisher ID `pub-3891377870003353` received. Next: serve ads.txt at the domain root (in flight), then await Google's review; ad placements after approval |
+| P2 | PvP | Needs the server-side API path first (persistence-design.md option B: API Gateway + Lambda). Design discussion before any code |
+| P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
+| P2 | 3 birds still silent | cactus_wren, gambels_quail, brown_pelican — zero commercially-safe recordings exist on xeno-canto or Commons today; recheck occasionally |
 
-| Priority | Issue | Notes |
-|----------|-------|-------|
-| ~~P0~~ | ~~No devops architecture defined~~ | ~~Documented in cicd.md — Terraform + GitHub Actions, S3 + CloudFront, 4 environments~~ |
-| ~~P0~~ | ~~Migrate hosting to AWS~~ | ~~All four environments live on S3 + CloudFront~~ |
-| ~~P0~~ | ~~Migrate domains to birdzgame.com~~ | ~~Done 2026-07-10: all four envs live on birdzgame.com, DNS + ACM validation fully Terraform-managed (cloudflare provider). AdSense unblocked.~~ |
+## Shipped (archive)
 
-## Game Design
+**2026-07-10 — the big day (birdzReact PRs #5–#12, all live in prod):**
 
-| Priority | Feature | Notes |
-|----------|---------|-------|
-| P1 | Biome/ecoregion overhaul | Approved 2026-07-10 (NA-only, cosmetic). Phase 1 (region names) shipped in birdzReact PR #10. Phase 2 (per-region bird pools) pairs with the roster expansion below. |
-| P1 | Expand bird roster ("a ton more birds" — Jared 2026-07-10) | Grow 24 → ~60 in increments of 4–6 per PR, prioritized to give every ecoregion a distinct pool (feeds ecoregion phase 2). Each bird: call/song phonetics + hints + facts + rarity/difficulty, and a recording where sourceable (xeno-canto key would unlock recordings for nearly all — currently 4 of 24 existing birds still lack audio). |
+- DynamoDB persistence (#5): cloud saves via Cognito Identity Pool, localStorage as offline cache
+- Biome detection reliability + iPhone fix (#6): retries, Overpass mirror, honest fallback UI, `?debug=1` trace, device-geolocation button (iOS strips GPS EXIF from uploads)
+- Bird-call audio (#7): banner ♪ + identify-screen playback, CC/PD recordings with in-app attribution; 27 of 30 birds have audio in all envs
+- Bundled Leaflet (#8): unpkg CDN dependency removed
+- Error surfacing + coverage (#9): localStorage failures warn; CI runs coverage (45% lines baseline)
+- Ecoregion phase 1 (#10): 18 NA regions, "Pacific Coast" instead of "Atlantic Coast" in California; generic fallbacks elsewhere
+- Roster batch 1 (#11): killdeer, western gull, Steller's jay, white-crowned sparrow, common poorwill, sandhill crane — every biome pool ≥4 birds
+- Base building phase A (#12): 8-item shop, seeds economy (split from score), rare birds gated behind preferred items, catered birds spawn 2×
 
-| P1 | Base building mechanic | Design: docs/base-building-design.md (decisions recorded 2026-07-10). ~~Phase A (items, seeds, attraction-shaped spawns)~~ done 2026-07-10, birdzReact PR #12. Remaining: **phase B** (grounded Animal Crossing-style visitors) and **phase C** (wants + relationship hearts). |
-| P2 | PvP | Same dropped handoff reference as base building. Needs server-side components (persistence-design.md option B: API Gateway + Lambda in front of the same table) — design discussion first. |
+**Earlier (2026-05 → 2026-07-09):**
 
-## Monetization
-
-| Priority | Feature | Notes |
-|----------|---------|-------|
-| P1 | AdSense integration | Unblocked by birdzgame.com purchase; needs the domain live first (P0 above). ads.txt at domain root, site verification, apply for review (takes days–weeks, start early), then ad placements in the app. |
-
-## AWS Backend Features
-
-| Priority | Feature | Notes |
-|----------|---------|-------|
-| ~~P0~~ | ~~CloudFront + S3~~ | ~~Provisioned per environment; deploys via GitHub Actions + OIDC~~ |
-| ~~P1~~ | ~~S3~~ | ~~Done 2026-07-10: audio served from existing site buckets under audio/ (no new infra, per audio-hosting-design.md); 13 CC/PD recordings + attribution.json live in dev~~ |
-| ~~P1~~ | ~~Cognito~~ | ~~Done: infra provisioned per env and app uses real Cognito SRP auth~~ |
-| ~~P1~~ | ~~DynamoDB~~ | ~~Done 2026-07-10 (birdzReact PR #5): app syncs progress via Cognito Identity Pool credentials, one PROGRESS item per user, localStorage offline fallback~~ |
-
-## Testing
-
-| Priority | Feature | Notes |
-|----------|---------|-------|
-| ~~P2~~ | ~~Code coverage~~ | ~~Done 2026-07-10 (birdzReact PR #9): npm run test:coverage (v8, text-summary + html), runs in CI on every PR; baseline 45% lines, no threshold gate~~ |
-
-## UX Improvements
-
-| Status | Feature | Completed |
-|--------|---------|-----------|
-| Done | Hints independently selectable | 2026-03-26 |
+- Domain migration to birdzgame.com — DNS + ACM fully Terraform-managed (Cloudflare provider)
+- AWS hosting: S3 + CloudFront × 4 envs, GitHub Actions OIDC pipeline, SSM deploy config (no PATs)
+- Real Cognito SRP auth (pre-signup auto-confirm); password policy 8+ with complexity
+- Mobile layout (PR #4), hint scoring fix (#3), bird lifecycle fixes (#1, #2), CI on every PR
+- Hints independently selectable (2026-03-26)
