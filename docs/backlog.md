@@ -7,7 +7,6 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Base building — phase C: wants + relationships | Request bubbles, 0–5 hearts per species, regular-visitor rewards. Cosmetic-only per decisions in the design doc. Phases A+B live |
 | P1 | Bird roster batches 2+ | 30 birds now; target ~60 in 4–6-bird PRs, thinnest ecoregion pools first ("a ton more birds" — Jared) |
 | P1 | Ecoregion phase 2: per-region bird pools | Birds gain `regions` tags; spawner prefers the region pool. Pairs naturally with roster batches |
 | P1 | AdSense | ads.txt live at birdzgame.com/ads.txt (2026-07-11, PR #14). **Awaiting Google's review** (days–weeks); ad placements wire up after approval |
@@ -32,6 +31,7 @@ archived at the bottom._
 
 - Base building phase B (#13): grounded visitors — catered birds land, hop, and wander near their items; tap for name card (or ??? + identify nudge)
 - ads.txt (#14): Jared's AdSense publisher ID served at the domain root
+- Base building phase C (#15): 💭 wants, 0–5 relationship hearts, regulars with seed gifts — **base building complete (all 3 phases)**
 
 **Earlier (2026-05 → 2026-07-09):**
 
