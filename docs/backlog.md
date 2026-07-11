@@ -9,10 +9,10 @@ archived at the bottom._
 |----------|------|----------------|
 | P1 | AdSense CMP consent message | **Blocked on Jared** (his AdSense account). Google requires a certified CMP consent banner for EEA/UK/Switzerland. Set it in AdSense → Privacy & messaging → **choose Google's CMP with 3 choices (Consent / Do not consent / Manage)** — GDPR-cleaner than 2-choice. It loads via the AdSense tag, so nothing ships until we wire ad placements (post-approval). Not a Guest Mode code change |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
-| P2 | PvP | Needs the server-side API path first (persistence-design.md option B: API Gateway + Lambda). Design discussion before any code |
+| P2 | PvP | Design doc drafted 2026-07-11 (docs/pvp-design.md) — cost-first per Jared. Awaiting his pick of mechanic/phase before any code |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
-| P2 | 14 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, burrowing_owl, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings anywhere today; recheck occasionally. mountain_bluebird audio is low quality — upgrade when possible |
+| P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings anywhere today; rechecked 2026-07-11, still nothing. Recheck occasionally |
 
 ## Shipped (archive)
 
@@ -40,6 +40,7 @@ archived at the bottom._
 - Public pages (#21): /guide (full 60-bird field guide from birds.ts), /privacy (AdSense cookie disclosure + opt-out links), /about — AdSense review readiness; landing links all three
 - Guest Mode (#22): "play as a guest" on landing — full game, localStorage-only saves (zero cloud traffic), signup-upsell banner, guest→account migration when cloud is empty; single-flight hydrate fixes a signup migration race
 - Bird data audit (#23): reviewed all 60 birds (Jared's ask re: original weaker-model entries). Data held up well; fixed Osprey fishing-success overstatement, Brown Pelican "only pelican that dives" error, and tagged Eastern Meadowlark to great-plains so California grasslands get the Western only
+- Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 
 **Earlier (2026-05 → 2026-07-09):**
 
