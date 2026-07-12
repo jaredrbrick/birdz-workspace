@@ -49,6 +49,7 @@ archived at the bottom._
 - **Prod promoted** — multiple bases phases 1+2 (#27/#28) live on birdzgame.com per Jared's go; prod bundle verified identical to staging
 - **Dead CSS-module animations + iPhone Base layout (#29)**: Jared's screenshot (clipped "blue dot" bird, Challenge button overlapping the fort label, stats digits cut off by the bottom sheet) led to a root cause: every animation referenced from a *.module.css was localized to a hashed name while the keyframes sat in a global animations.css — birds never actually flew, visitors never hopped. Keyframes now live in the modules that use them; flight moved to the sprite root; a calling bird pauses mid-flight (call fires 30–60% into the crossing so it's on-screen); mobile fort label ellipsizes short of the Challenge button; bottom sheet adds env(safe-area-inset-bottom) with stats pinned. Verified headless at 390×844
 - **Visitor card guess-call button (#30, Jared's ask)**: the "???" card's passive hint is now a 🎧 "Guess its call" button (triggerVisitorCall → identify screen, normal scoring/bond flow), and the card pins to the visitor's near edge instead of hanging off the viewport
+- **#29 + #30 promoted to prod** same day (Jared's go) — all four envs serve the same bundle; verified the guess button in prod's served JS
 
 **2026-07-12:**
 
