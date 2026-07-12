@@ -7,9 +7,8 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Multiple bases phase 1 | **IN PROGRESS** (2026-07-12). Decisions locked (docs/multiple-bases-design.md): cap 3; shared discovery/seeds/bond; home-base regulars; SetupBase reuse. Phase 1 = bases[]+activeBaseId, switcher, "+ New base", per-base items, homeBaseId on regulars, additive migration |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
-| P2 | Multiple bases phase 2 | Met birds visit other bases; relationship-gated moves to another base/biome (Jared's decision #4); seed-priced base slot. After phase 1 |
+| P2 | Multiple bases phase 2 | Met birds visit other bases; relationship-gated moves to another base/biome (Jared's decision #4); seed-priced base slot. progress.birdHomes anchor shipped in phase 1 |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
@@ -50,6 +49,7 @@ archived at the bottom._
 
 - AdSense CMP consent banner: **done by Jared in his AdSense account** (Privacy & messaging, Google's certified CMP). Loads via the AdSense tag once ad placements ship post-approval — no code change needed
 - Multiple-bases design finalized: Jared answered all 5 decisions (cap 3; shared discovery + seeds; bond shared with home-base birds that can visit and later relocate; SetupBase reused per base). Phase 1 started
+- **Multiple bases phase 1 (#27)**: bases[] + activeBaseId (cap 3), fort-label base switcher, "+ New base" via SetupBase, per-base items, progress.birdHomes (phase 2 anchor), additive migration with legacy `base` mirror for old cached clients; world-map build now routes through SetupBase. 172 tests green; verified headless end-to-end (migration, switcher, geolocation build, per-base items, cloud save shape in dev DynamoDB). Deployed: dev + test + staging; **prod promotion awaiting Jared's go** (permission gate)
 
 **Earlier (2026-05 → 2026-07-09):**
 
