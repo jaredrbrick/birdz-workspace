@@ -148,18 +148,28 @@ Browser ──JWT──▶ API Gateway (HTTP API, JWT authorizer = existing user
    and matchmaking. Gate this behind actual concurrent-user numbers, since both
    the cost and the fun depend on having a live opponent.
 
-## Open questions for Jared
+## Decisions (Jared, 2026-07-11)
 
-1. **Mechanic:** async challenge-a-friend (phase 1) as the starting point — yes?
-   And is a daily tournament (phase 2) something you want soon after, or later?
-2. **What's the contest?** Same random 10 calls for both players is the simplest.
-   Alternatives: themed sets (one biome), or "hardest birds." Any preference?
-3. **Stakes:** does winning pay out **seeds** (ties PvP into base building), cosmetic
-   bragging rights only, or both? (Seeds keep the single-player economy central.)
-4. **Social graph:** share-a-link (no friend system, cheapest) vs. usernames /
-   friend list (more infra). Link-first is the low-cost start.
-5. **Key choice:** key PvP items by user-pool `sub` or reuse the identity-pool ID
-   from single-player? Minor, but it affects the Lambda's DynamoDB access shape.
+- ✅ **Mechanic: async challenge-a-friend** (phase 1). Confirmed.
+- ✅ **Invite: share-a-link**, no friend/username system. Confirmed.
+- ✅ **Challenge invite carries a message** — a line like _"<username> has
+  challenged you to a bird-off"_ (exact verbiage TBD; the `<username>` implies we
+  do surface the challenger's display name on the invite/landing, even though
+  there's no friend graph).
+- ⏳ **Still open — stakes:** does winning pay **seeds** (ties PvP into base
+  building), cosmetic bragging rights only, or both? This is the one remaining
+  answer needed before the data model is final. Default assumption if unanswered:
+  bragging rights + a small seed reward to the winner, since the economy is
+  already seed-based.
 
-None of this is built yet — it waits on your answers to #1–#3 especially, since
-they set the data model.
+## Still to confirm
+
+1. **Stakes** (above) — seeds payout or cosmetic only.
+2. **Contest set:** same random 10 calls for both players (simplest) vs. themed
+   (one biome) vs. "hardest birds." Default: random 10.
+3. **Key choice (implementation detail):** key PvP items by user-pool `sub` or
+   reuse the identity-pool ID from single-player. Minor; decided at build time.
+
+Direction is locked (async, link-based, named challenger). Phase-1 build can start
+once the stakes question is answered, since seeds-vs-cosmetic changes what the
+scoring Lambda writes back.
