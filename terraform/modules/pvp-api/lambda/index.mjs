@@ -53,6 +53,13 @@ function betterOf(a, b) {
   return a.timeMs <= b.timeMs ? a : b
 }
 
+// 'win' | 'lose' | 'tie' from my result vs the opponent's.
+function outcomeFor(me, opp) {
+  const tie = me.score === opp.score && me.hintsUsed === opp.hintsUsed && me.timeMs === opp.timeMs
+  if (tie) return 'tie'
+  return betterOf({ ...me, who: 'me' }, { ...opp, who: 'opp' }).who === 'me' ? 'win' : 'lose'
+}
+
 function pickChallengeBirds() {
   const pool = [...ROSTER]
   for (let i = pool.length - 1; i > 0; i--) {
@@ -123,13 +130,29 @@ export async function handler(event) {
     if (route === 'GET /challenges/{id}') {
       const { meta, results } = await getChallenge(id)
       if (!meta) return json(404, { error: 'not found' })
+
+      // ?me=<identityId> lets a returning player see whether they've played and,
+      // once the opponent has too, their outcome — closing the "did I win?" gap.
+      const me = event.queryStringParameters?.me
+      const mine = me ? results.find(r => r.recordKey === `RESULT#${me}`) : undefined
+      const opponent = mine ? results.find(r => r.recordKey !== mine.recordKey) : undefined
+      const yourResult = mine
+        ? {
+            score: mine.score,
+            correctCount: mine.correctCount,
+            opponentName: opponent?.name ?? null,
+            opponentScore: opponent?.score ?? null,
+            outcome: opponent ? outcomeFor(mine, opponent) : 'pending',
+          }
+        : null
+
       return json(200, {
         id,
         createdByName: meta.createdByName,
         birds: meta.birds,
-        results: results.map(r => ({
-          name: r.name, score: r.score, correctCount: r.correctCount,
-        })),
+        alreadyPlayed: !!mine,
+        yourResult,
+        results: results.map(r => ({ name: r.name, score: r.score, correctCount: r.correctCount })),
       })
     }
 
