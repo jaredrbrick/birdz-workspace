@@ -1,16 +1,15 @@
 # Backlog
 
-_Last groomed: 2026-07-11 (afternoon). Open items first; everything shipped is
+_Last groomed: 2026-07-12. Open items first; everything shipped is
 archived at the bottom._
 
 ## Open
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | AdSense CMP consent message | **Blocked on Jared** (his AdSense account). Google requires a certified CMP consent banner for EEA/UK/Switzerland. Set it in AdSense → Privacy & messaging → **choose Google's CMP with 3 choices (Consent / Do not consent / Manage)** — GDPR-cleaner than 2-choice. It loads via the AdSense tag, so nothing ships until we wire ad placements (post-approval). Not a Guest Mode code change |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
-| P2 | PvP phase 1.5 (polish) | Follow-ups to shipped phase 1: (1) creator's **return-to-see-result** view + a "my challenges" list (today the creator sees "pending" after playing and must reopen the link to see both scores); (2) opaque-audio blind play (phase 1 lets a technical user read the answer client-side); (3) rematch. All additive on the existing backend |
-| P2 | Multiple bases | Jared's idea 2026-07-11: "you should be able to have more than one base." Sizable — GameBase (singular) → bases[], base-switcher UI, spawns/visitors/bond scoped per active base, DynamoDB save shape (still one PROGRESS item, base→bases[]). Needs a quick design pass + a few decisions (how many? shared vs per-base bird discovery & seeds?) before code |
+| P2 | Multiple bases phase 2 | Met birds visit other bases; relationship-gated moves to another base/biome (Jared's decision #4); seed-priced base slot. progress.birdHomes anchor shipped in phase 1 |
+| P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
 | P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** |
@@ -44,6 +43,13 @@ archived at the bottom._
 - Photo reveal (#24): real bird photo shown on the identify result screen (correct guess or give-up) with a credit line. All 60 birds have a curated commercially-safe Wikimedia photo (CC0/PD/CC-BY/CC-BY-SA), hosted in S3 photos/ like audio; deploy sync excludes photos/*. Caught + fixed a promote bug where git merge didn't advance the submodule pin (envs shipped stale code until pins were forced to f8801d7)
 - Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 - **PvP phase 1 (backend PRs terraform + client #25) — LIVE in all envs**: async "bird-off" — Challenge a friend on the base → share link → both play the same 10 calls → win/lose/tie + seeds (winner 25 / loser 5 / tie 15). First server-side compute in the stack: API Gateway HTTP API + Lambda (JWT-authed by the user pool) + the existing DynamoDB table; server owns the answer key + scoring + seed grant. Seed payout verified landing on real cloud saves. Real account required to play (invite returns guests via signup)
+- PvP result-return view (Lambda GET `?me=` + client PR #26): reopening a challenge you've played shows the outcome (win/lose/tie, both scores) instead of the play button — closes the creator's "did I win?" gap. Verified live two-player on dev + prod
+
+**2026-07-12:**
+
+- AdSense CMP consent banner: **done by Jared in his AdSense account** (Privacy & messaging, Google's certified CMP). Loads via the AdSense tag once ad placements ship post-approval — no code change needed
+- Multiple-bases design finalized: Jared answered all 5 decisions (cap 3; shared discovery + seeds; bond shared with home-base birds that can visit and later relocate; SetupBase reused per base). Phase 1 started
+- **Multiple bases phase 1 (#27)**: bases[] + activeBaseId (cap 3), fort-label base switcher, "+ New base" via SetupBase, per-base items, progress.birdHomes (phase 2 anchor), additive migration with legacy `base` mirror for old cached clients; world-map build now routes through SetupBase. 172 tests green; verified headless end-to-end (migration, switcher, geolocation build, per-base items, cloud save shape in dev DynamoDB). Deployed: dev + test + staging; **prod promotion awaiting Jared's go** (permission gate)
 
 **Earlier (2026-05 → 2026-07-09):**
 
