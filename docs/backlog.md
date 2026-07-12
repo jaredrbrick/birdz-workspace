@@ -7,7 +7,6 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Promote prod | **Blocked on Jared saying "promote prod"** (permission gate on prod pushes). Prod is 2 features behind: multiple bases phase 1 (#27) AND phase 2 (#28), both verified on dev/test/staging |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
@@ -44,6 +43,12 @@ archived at the bottom._
 - Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 - **PvP phase 1 (backend PRs terraform + client #25) — LIVE in all envs**: async "bird-off" — Challenge a friend on the base → share link → both play the same 10 calls → win/lose/tie + seeds (winner 25 / loser 5 / tie 15). First server-side compute in the stack: API Gateway HTTP API + Lambda (JWT-authed by the user pool) + the existing DynamoDB table; server owns the answer key + scoring + seed grant. Seed payout verified landing on real cloud saves. Real account required to play (invite returns guests via signup)
 - PvP result-return view (Lambda GET `?me=` + client PR #26): reopening a challenge you've played shows the outcome (win/lose/tie, both scores) instead of the play button — closes the creator's "did I win?" gap. Verified live two-player on dev + prod
+
+**2026-07-12 (afternoon):**
+
+- **Prod promoted** — multiple bases phases 1+2 (#27/#28) live on birdzgame.com per Jared's go; prod bundle verified identical to staging
+- **Dead CSS-module animations + iPhone Base layout (#29)**: Jared's screenshot (clipped "blue dot" bird, Challenge button overlapping the fort label, stats digits cut off by the bottom sheet) led to a root cause: every animation referenced from a *.module.css was localized to a hashed name while the keyframes sat in a global animations.css — birds never actually flew, visitors never hopped. Keyframes now live in the modules that use them; flight moved to the sprite root; a calling bird pauses mid-flight (call fires 30–60% into the crossing so it's on-screen); mobile fort label ellipsizes short of the Challenge button; bottom sheet adds env(safe-area-inset-bottom) with stats pinned. Verified headless at 390×844
+- **Visitor card guess-call button (#30, Jared's ask)**: the "???" card's passive hint is now a 🎧 "Guess its call" button (triggerVisitorCall → identify screen, normal scoring/bond flow), and the card pins to the visitor's near edge instead of hanging off the viewport
 
 **2026-07-12:**
 
