@@ -7,8 +7,8 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
+| P1 | Promote prod | **Blocked on Jared saying "promote prod"** (permission gate on prod pushes). Prod is 2 features behind: multiple bases phase 1 (#27) AND phase 2 (#28), both verified on dev/test/staging |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
-| P2 | Multiple bases phase 2 | Met birds visit other bases; relationship-gated moves to another base/biome (Jared's decision #4); seed-priced base slot. progress.birdHomes anchor shipped in phase 1 |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
@@ -50,6 +50,7 @@ archived at the bottom._
 - AdSense CMP consent banner: **done by Jared in his AdSense account** (Privacy & messaging, Google's certified CMP). Loads via the AdSense tag once ad placements ship post-approval — no code change needed
 - Multiple-bases design finalized: Jared answered all 5 decisions (cap 3; shared discovery + seeds; bond shared with home-base birds that can visit and later relocate; SetupBase reused per base). Phase 1 started
 - **Multiple bases phase 1 (#27)**: bases[] + activeBaseId (cap 3), fort-label base switcher, "+ New base" via SetupBase, per-base items, progress.birdHomes (phase 2 anchor), additive migration with legacy `base` mirror for old cached clients; world-map build now routes through SetupBase. 172 tests green; verified headless end-to-end (migration, switcher, geolocation build, per-base items, cloud save shape in dev DynamoDB). Deployed: dev + test + staging; **prod promotion awaiting Jared's go** (permission gate)
+- **Multiple bases phase 2 (#28) — MULTIPLE BASES COMPLETE**: travelers (birds at ≥1 heart visit your other bases regardless of biome/items, ✈️ card shows home fort, works on an empty base), relocation (visiting regular has 20% chance to move in, 🏡 announced, birdHomes updates; regular perks now home-base-only), seed-priced plots (SLOT_COSTS 0/250/500, gated in switcher + SetupBase). 182 tests; verified headless incl. a live Wood Thrush traveling forest→coast. Deployed dev + test + staging; prod pending with phase 1
 
 **Earlier (2026-05 → 2026-07-09):**
 
