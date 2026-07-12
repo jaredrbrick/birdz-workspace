@@ -41,6 +41,7 @@ archived at the bottom._
 - Public pages (#21): /guide (full 60-bird field guide from birds.ts), /privacy (AdSense cookie disclosure + opt-out links), /about — AdSense review readiness; landing links all three
 - Guest Mode (#22): "play as a guest" on landing — full game, localStorage-only saves (zero cloud traffic), signup-upsell banner, guest→account migration when cloud is empty; single-flight hydrate fixes a signup migration race
 - Bird data audit (#23): reviewed all 60 birds (Jared's ask re: original weaker-model entries). Data held up well; fixed Osprey fishing-success overstatement, Brown Pelican "only pelican that dives" error, and tagged Eastern Meadowlark to great-plains so California grasslands get the Western only
+- Photo reveal (#24): real bird photo shown on the identify result screen (correct guess or give-up) with a credit line. All 60 birds have a curated commercially-safe Wikimedia photo (CC0/PD/CC-BY/CC-BY-SA), hosted in S3 photos/ like audio; deploy sync excludes photos/*. Caught + fixed a promote bug where git merge didn't advance the submodule pin (envs shipped stale code until pins were forced to f8801d7)
 - Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 
 **Earlier (2026-05 → 2026-07-09):**
