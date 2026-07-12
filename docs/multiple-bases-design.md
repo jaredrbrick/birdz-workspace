@@ -74,13 +74,22 @@ These change the data model, so they came first. Jared's answers:
 
 ## Phasing
 
-1. **Phase 1 (building now):** `bases[]` + `activeBaseId` (cap 3), switcher,
-   "+ New base" via SetupBase, per-base items, shared discovery + seeds + bond,
-   additive migration. Regulars get a `homeBaseId` (existing regulars migrate to
-   the current base) so phase 2 has its anchor. No visits/moves yet.
-2. **Phase 2:** decision #4's mechanics — met birds visiting other bases,
-   relationship-gated moves to another base/biome — plus a seed-priced base slot
-   (decision #1's economy hook).
+1. **Phase 1 (SHIPPED 2026-07-12, PR #27):** `bases[]` + `activeBaseId` (cap 3),
+   switcher, "+ New base" via SetupBase, per-base items, shared discovery +
+   seeds + bond, additive migration with a legacy `base` mirror for old cached
+   clients. `progress.birdHomes` records where each relationship started.
+2. **Phase 2 (built 2026-07-12):** decision #4's mechanics —
+   - **Travelers:** birds at ≥1 heart (`TRAVEL_HEARTS`) drop by your *other*
+     bases regardless of biome/items (25% of visitor rolls); ✈️ badge + card
+     shows "visiting from <home fort>". No item required — a fresh empty base
+     can still get visits from friends.
+   - **Relocation:** a visiting *regular* (max hearts) has a 20% chance per
+     away-visit to move in — `birdHomes` updates, 🏡 "just moved in!" on the
+     card. Regular perks (2× visit weight, seed gifts) now apply only at the
+     bird's home base.
+   - **Seed-priced plots** (decision #1's hook): `SLOT_COSTS = [0, 250, 500]` —
+     first base free, second 250, third 500. Priced + afford-gated in the
+     switcher and the SetupBase confirm button.
 
 ## Not in scope
 
