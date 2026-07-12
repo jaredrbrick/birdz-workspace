@@ -38,11 +38,11 @@ data "cloudflare_zone" "birdzgame" {
 module "static_site" {
   source = "../../modules/static-site"
 
-  environment = "staging"
-  domain      = "staging.birdzgame.com"
-  bucket_name      = "birdz-staging-site"
+  environment        = "staging"
+  domain             = "staging.birdzgame.com"
+  bucket_name        = "birdz-staging-site"
   cloudflare_zone_id = data.cloudflare_zone.birdzgame.zone_id
-  github_sub_claim = "repo:jaredrbrick/birdz-workspace:environment:staging"
+  github_sub_claim   = "repo:jaredrbrick/birdz-workspace:environment:staging"
 
   tags = {
     Project     = "birdz"
@@ -94,6 +94,7 @@ module "deploy_config" {
     cognito-client-id    = module.cognito.client_id
     identity-pool-id     = module.cognito.identity_pool_id
     game-data-table      = module.game_data.table_name
+    pvp-api-url          = module.pvp_api.api_url
   }
   tags = {
     Project     = "birdz"
@@ -113,4 +114,25 @@ module "game_data" {
     Environment = "staging"
     ManagedBy   = "terraform"
   }
+}
+
+module "pvp_api" {
+  source      = "../../modules/pvp-api"
+  environment = "staging"
+
+  game_data_table_name = module.game_data.table_name
+  game_data_table_arn  = module.game_data.table_arn
+  user_pool_id         = module.cognito.user_pool_id
+  user_pool_client_id  = module.cognito.client_id
+  allowed_origin       = "https://staging.birdzgame.com"
+
+  tags = {
+    Project     = "birdz"
+    Environment = "staging"
+    ManagedBy   = "terraform"
+  }
+}
+
+output "pvp_api_url" {
+  value = module.pvp_api.api_url
 }
