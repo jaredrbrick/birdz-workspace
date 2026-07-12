@@ -82,7 +82,7 @@ jobs:
           echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-dev-site --delete --exclude "audio/*"
+        run: aws s3 sync dist/ s3://birdz-dev-site --delete --exclude "audio/*" --exclude "photos/*"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
@@ -125,7 +125,7 @@ jobs:
           echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-test-site --delete --exclude "audio/*"
+        run: aws s3 sync dist/ s3://birdz-test-site --delete --exclude "audio/*" --exclude "photos/*"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
@@ -168,7 +168,7 @@ jobs:
           echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-staging-site --delete --exclude "audio/*"
+        run: aws s3 sync dist/ s3://birdz-staging-site --delete --exclude "audio/*" --exclude "photos/*"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
@@ -211,7 +211,7 @@ jobs:
           echo '{"userPoolId":"${{ steps.config.outputs.user_pool_id }}","clientId":"${{ steps.config.outputs.client_id }}","identityPoolId":"${{ steps.config.outputs.identity_pool_id }}","gameDataTable":"${{ steps.config.outputs.game_data_table }}","region":"us-east-1"}' > dist/config.json
 
       - name: Sync to S3
-        run: aws s3 sync dist/ s3://birdz-prod-site --delete --exclude "audio/*"
+        run: aws s3 sync dist/ s3://birdz-prod-site --delete --exclude "audio/*" --exclude "photos/*"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ steps.config.outputs.cf_distribution_id }} --paths "/*"
