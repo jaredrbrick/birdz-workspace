@@ -9,7 +9,7 @@ archived at the bottom._
 |----------|------|----------------|
 | P1 | AdSense CMP consent message | **Blocked on Jared** (his AdSense account). Google requires a certified CMP consent banner for EEA/UK/Switzerland. Set it in AdSense → Privacy & messaging → **choose Google's CMP with 3 choices (Consent / Do not consent / Manage)** — GDPR-cleaner than 2-choice. It loads via the AdSense tag, so nothing ships until we wire ad placements (post-approval). Not a Guest Mode code change |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
-| P2 | PvP | Design doc drafted 2026-07-11 (docs/pvp-design.md) — cost-first per Jared. Awaiting his pick of mechanic/phase before any code |
+| P2 | PvP (phase 1) | **Design complete** (docs/pvp-design.md, 2026-07-11): async challenge-a-friend, link invite, winner shown + gets seeds (25/5/15 win/lose/tie), API Gateway+Lambda+existing DynamoDB, full build spec. Ready to build — awaiting Jared's review + go-ahead (it's a multi-part infra effort: Terraform module, Lambda, client PvP session) |
 | P2 | Multiple bases | Jared's idea 2026-07-11: "you should be able to have more than one base." Sizable — GameBase (singular) → bases[], base-switcher UI, spawns/visitors/bond scoped per active base, DynamoDB save shape (still one PROGRESS item, base→bases[]). Needs a quick design pass + a few decisions (how many? shared vs per-base bird discovery & seeds?) before code |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
@@ -41,6 +41,7 @@ archived at the bottom._
 - Public pages (#21): /guide (full 60-bird field guide from birds.ts), /privacy (AdSense cookie disclosure + opt-out links), /about — AdSense review readiness; landing links all three
 - Guest Mode (#22): "play as a guest" on landing — full game, localStorage-only saves (zero cloud traffic), signup-upsell banner, guest→account migration when cloud is empty; single-flight hydrate fixes a signup migration race
 - Bird data audit (#23): reviewed all 60 birds (Jared's ask re: original weaker-model entries). Data held up well; fixed Osprey fishing-success overstatement, Brown Pelican "only pelican that dives" error, and tagged Eastern Meadowlark to great-plains so California grasslands get the Western only
+- Photo reveal (#24): real bird photo shown on the identify result screen (correct guess or give-up) with a credit line. All 60 birds have a curated commercially-safe Wikimedia photo (CC0/PD/CC-BY/CC-BY-SA), hosted in S3 photos/ like audio; deploy sync excludes photos/*. Caught + fixed a promote bug where git merge didn't advance the submodule pin (envs shipped stale code until pins were forced to f8801d7)
 - Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 
 **Earlier (2026-05 → 2026-07-09):**
