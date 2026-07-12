@@ -9,4 +9,4 @@
 Thumbs.db
 
 # Exports
-/docs/*.pdf
+/docs/*.pdf/terraform/modules/pvp-api/.build/
