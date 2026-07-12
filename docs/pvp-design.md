@@ -148,28 +148,135 @@ Browser ──JWT──▶ API Gateway (HTTP API, JWT authorizer = existing user
    and matchmaking. Gate this behind actual concurrent-user numbers, since both
    the cost and the fun depend on having a live opponent.
 
-## Decisions (Jared, 2026-07-11)
+## Decisions (Jared, 2026-07-11) — all resolved
 
-- ✅ **Mechanic: async challenge-a-friend** (phase 1). Confirmed.
-- ✅ **Invite: share-a-link**, no friend/username system. Confirmed.
-- ✅ **Challenge invite carries a message** — a line like _"<username> has
-  challenged you to a bird-off"_ (exact verbiage TBD; the `<username>` implies we
-  do surface the challenger's display name on the invite/landing, even though
-  there's no friend graph).
-- ⏳ **Still open — stakes:** does winning pay **seeds** (ties PvP into base
-  building), cosmetic bragging rights only, or both? This is the one remaining
-  answer needed before the data model is final. Default assumption if unanswered:
-  bragging rights + a small seed reward to the winner, since the economy is
-  already seed-based.
+- ✅ **Mechanic:** async challenge-a-friend (phase 1).
+- ✅ **Invite:** share-a-link, no friend/username system.
+- ✅ **Named challenger:** the invite surfaces the challenger's display name
+  ("<username> challenged you to a bird-off").
+- ✅ **Stakes:** **the winner is shown clearly and gets seeds.** Both players see
+  who won; the winner's game save is credited seeds server-side.
+- ✅ **Contest set:** same 10 random calls for both players (default; themed sets
+  are a later nicety).
 
-## Still to confirm
+Direction is fully locked. The build-ready spec follows.
 
-1. **Stakes** (above) — seeds payout or cosmetic only.
-2. **Contest set:** same random 10 calls for both players (simplest) vs. themed
-   (one biome) vs. "hardest birds." Default: random 10.
-3. **Key choice (implementation detail):** key PvP items by user-pool `sub` or
-   reuse the identity-pool ID from single-player. Minor; decided at build time.
+---
 
-Direction is locked (async, link-based, named challenger). Phase-1 build can start
-once the stakes question is answered, since seeds-vs-cosmetic changes what the
-scoring Lambda writes back.
+# Phase 1 — build spec
+
+## The player experience
+
+1. **Create.** From the base (a new "Challenge a friend" button), the player taps
+   create. The server picks 10 birds, makes a challenge, and returns a share link
+   (`birdzgame.com/pvp/<id>`). The creator sees "Send this to a friend — first to
+   the best score wins seeds" and can play their own round immediately.
+2. **Play.** Both players play the **same 10 calls in the same order**, reusing the
+   existing identify UI (call playback, hints, search-to-guess) run as a 10-round
+   sequence with a running tally instead of a single round.
+3. **Invite.** The friend opens the link → a landing card: "🐦 <username>
+   challenged you to a bird-off! 10 calls. Best score wins." → Play (as guest or
+   signed in).
+4. **Result.** When a player finishes, they see their score. Once **both** have
+   played, each sees the outcome: **You won! / You lost. / Tie.** with both
+   scores, the opponent's name, and — for the winner — **+N seeds**.
+
+## Scoring & seeds
+
+- **Score per round:** reuse the existing hint-aware scoring (`scoreForHints`) so
+  fewer hints = more points, keeping it consistent with single-player. Sum over 10
+  rounds = challenge score.
+- **Winner:** higher total score. **Tiebreakers** in order: fewer hints used, then
+  faster total time. Still tied → both treated as winners (both paid).
+- **Seed payout (server-authoritative, tunable):**
+  - Winner: **+25 seeds** (≈ half of a Brush Pile; meaningful but not
+    economy-breaking — one correct single-player ID is ~10–15 seeds).
+  - Loser: **+5 seeds** (participation, so a challenge is never a pure loss).
+  - Tie: both **+15**.
+- **How seeds land:** the scoring Lambda does a DynamoDB `UpdateItem ... ADD
+  seeds :n` on the winner's own `PROGRESS` item (source of truth). The result
+  response echoes `seedsAwarded`; the client shows it and **re-hydrates its save
+  from the cloud** so the total is correct with no double-count. Guests (no cloud
+  save) get the seeds credited to localStorage via the response value.
+
+## Anti-cheat — what phase 1 does and doesn't protect
+
+- **Protected:** score forgery. You can't POST "I won, pay me" — the server holds
+  the answer key, scores your submitted guesses itself, and decides the winner and
+  the payout. This is the protection that matters for a seed economy.
+- **Accepted for phase 1:** a technical user could read the answer from the
+  client, because the identify UI needs the bird's data to render calls/hints and
+  the audio file is served at `/audio/<birdId>.mp3` (the URL names the bird). True
+  blind play needs opaque audio URLs — deferred as a phase-1.5 hardening if
+  cheating a *friend* in a casual game ever proves to be a real problem.
+
+## Data model (existing `birdz-<env>-game-data` table)
+
+- **Challenge meta** — `PK = CHALLENGE#<id>`, `SK = META`
+  `{ birds: [10 birdIds, ordered], createdBy, createdByUserId, createdAt,
+     status: 'open'|'complete', ttlEpoch }`
+  The `birds` array is the answer key — returned to clients **without names is not
+  feasible in phase 1** (see anti-cheat), so clients do receive it; the server
+  never *trusts* it back.
+- **Per-player result** — `PK = CHALLENGE#<id>`, `SK = RESULT#<userId>`
+  `{ username, score, correctCount, hintsUsed, timeMs, completedAt }`
+- **TTL:** set `ttlEpoch` ~30 days out (DynamoDB TTL auto-expires stale
+  challenges — no cleanup job, no storage creep).
+- **Keying:** PvP items key by user-pool `sub` (from the JWT the API authorizer
+  already validates). Seed grants cross-reference the single-player `PROGRESS`
+  item, which is keyed by identity-pool id — the Lambda maps sub→identityId via a
+  tiny `USER#<sub>` pointer written on first PvP call, or we accept keying PvP by
+  identityId too. **Decision: key everything by identity id** for a single
+  consistent key, obtained by having the client send its identity id in the create
+  call (it already has it for cloud saves). Simplest; no mapping table.
+
+## API (API Gateway HTTP API + one Lambda, JWT authorizer = existing user pool)
+
+| Route | Does |
+|---|---|
+| `POST /challenges` | Pick 10 random birds, write `META`, return `{ id, shareUrl }` |
+| `GET /challenges/{id}` | Return meta for playing + both results so far (for the result screen) |
+| `POST /challenges/{id}/results` | Score the submitted guesses, write `RESULT`, if both done decide winner + grant seeds, return `{ yourScore, opponentScore?, outcome, seedsAwarded }` |
+
+Node 20, arm64, 128 MB. No cold-start concern for async play. One handler,
+switch on route.
+
+## Client changes (birdzReact)
+
+- **PvP session hook** — wraps the identify flow to run 10 sequential rounds over
+  a fixed bird list, accumulating score/hints/time (generalizes
+  `useIdentificationSession`, which today is single-target).
+- **Routes:** `/app/pvp/new` (create + share), `/pvp/:id` (public invite landing →
+  play), `/app/pvp/:id/result` (outcome). The invite route is **public** (like
+  `/guide`) so a link works before login; playing prompts guest/sign-in.
+- **API client** — small `pvp.ts` util calling the three endpoints with the
+  Cognito access token (mirrors `cloudSave.ts`).
+- **Entry point** — "Challenge a friend" button on the base screen.
+- **Result screen** — win/lose/tie, both scores, opponent name, seed award; re-hydrate
+  save after a win.
+
+## Infra & rollout
+
+- **Terraform:** new `apigateway` + `lambda` module per env (4 envs), JWT authorizer
+  pointed at the existing user pool, IAM for the Lambda to read/write the game-data
+  table. API base URL flows to the client via `config.json` (one more SSM
+  deploy-config value, same mechanism as `gameDataTable`).
+- **Pipeline:** the deploy workflow gains a step to build + publish the Lambda zip
+  (or Terraform packages it). Fits the existing 4-env promote flow.
+- **Tests:** Lambda unit tests for scoring/tiebreak/seed grant; client tests for
+  the 10-round session and result rendering; a verify pass driving create → play →
+  result end-to-end.
+
+## Build order (smallest shippable slices)
+
+1. Terraform the API+Lambda+routes with a stub scorer; wire `config.json`. (Infra
+   only — nothing user-facing yet.)
+2. Lambda: create + score + seed grant + tiebreaks, with unit tests.
+3. Client: PvP session (10 rounds) + create/share + invite landing + result.
+4. Verify end-to-end on dev, then ship through the pipeline.
+
+## Explicitly out of scope for phase 1
+
+Friends/usernames graph, real-time, daily tournament/leaderboard (phase 2), themed
+challenge sets, opaque-audio blind play, rematch/history. All are additive on top
+of this backend.
