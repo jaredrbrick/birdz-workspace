@@ -1,9 +1,9 @@
 # Multiple bases — design
 
 _Drafted 2026-07-12 for Jared's review. His idea: "you should be able to have
-more than one base." **No code until the decisions below are made** — they set
-the data model. Same pattern as the PvP doc: options + recommendations + the
-specific questions._
+more than one base." **DECIDED 2026-07-12** — Jared answered all five questions
+(see Decisions below); phase 1 is building. Same pattern as the PvP doc:
+options + recommendations + the specific questions._
 
 ## Today
 
@@ -36,42 +36,32 @@ progress: Progress      // unchanged — stays player-level
 an existing save's single `base` becomes `bases: [{ ...base, id }]` with
 `activeBaseId` set to it. Old saves and the `types.ts` contract stay valid.
 
-## Decisions I need (the crux)
+## Decisions (made 2026-07-12)
 
-These change the data model, so they come first. Recommendations in **bold**.
+These change the data model, so they came first. Jared's answers:
 
-1. **How many bases?**
-   - Options: unlimited · a flat cap · a cap that unlocks with progress (e.g., 1
-     free, more at score/discovery milestones or bought with seeds).
-   - **Rec: start with a small cap of ~3**, and make extra slots a *seed sink*
-     later (buy a new plot). Gives the economy something to do and a progression
-     hook, without unbounded UI.
+1. **How many bases?** → **Cap of ~3.** Extra slots become a *seed sink* later
+   (buy a new plot) — economy hook without unbounded UI.
 
-2. **Bird discovery — shared or per-base?**
-   - **Rec: shared.** Your field guide is your life list as a birder; re-discovering
-     the same chickadee at each base would feel like busywork. Discovery stays on
-     `progress`.
+2. **Bird discovery — shared or per-base?** → **Shared.** Your field guide is
+   your life list as a birder. Discovery stays on `progress`.
 
-3. **Seeds — one wallet or per-base?**
-   - **Rec: one shared wallet.** A single economy keeps the shop coherent; per-base
-     seeds would fragment it and complicate PvP payouts. Seeds stay on `progress`.
+3. **Seeds — one wallet or per-base?** → **One shared wallet.** Keeps the shop
+   coherent and PvP payouts simple. Seeds stay on `progress`.
 
-4. **Bond / relationships — shared or per-base?** (the interesting one)
-   - Bond is currently per-bird at the player level. With multiple bases there are
-     two feels:
-     - **Shared bond** (simpler): you have one relationship with "the Northern
-       Cardinal" regardless of where you meet it.
-     - **Per-base regulars** (more Animal-Crossing, which you asked for): a bird
-       becomes a *regular at the base it frequents* — your forest base has its
-       crew, your coast base has another.
-   - **Rec: bond points stay shared per-bird, but "regular" status is per-base.**
-     You keep one relationship number, but each base grows its own cast of
-     regulars — closest to the Animal-Crossing feel without resetting affection.
+4. **Bond / relationships?** → **Home-base birds that can visit and, at high
+   bond, relocate** (Jared's design, richer than either option offered):
+   - Bond points stay **shared per-bird** — one relationship number, never reset.
+   - A bird's **home base is the base where the relationship starts** (where it
+     became a regular). Each base grows its own cast.
+   - Birds you've already met can **appear as visitors at your other bases**
+     early in the relationship.
+   - As the relationship develops, a bird can **decide to move** to another of
+     your bases — even a different biome. Relationship-gated migration.
 
-5. **Building a base — same setup each time?**
-   - **Rec: yes** — reuse the existing SetupBase flow (photo / map / "use my
-     location") for each new base, so every base is a real place. A "+ New base"
-     entry from the base screen or world map.
+5. **Building a base — same setup each time?** → **Yes.** Reuse the existing
+   SetupBase flow (photo / map / "use my location") for each new base, so every
+   base is a real place. A "+ New base" entry from the base screen.
 
 ## UI
 
@@ -84,20 +74,22 @@ These change the data model, so they come first. Recommendations in **bold**.
 
 ## Phasing
 
-1. **Phase 1:** `bases[]` + `activeBaseId`, switcher, "+ New base", per-base items,
-   shared discovery + seeds, migration. Bond stays shared (no regression). This is
-   the whole feature at its simplest.
-2. **Phase 2 (optional):** per-base regulars (decision #4's richer half), and a
-   seed-priced base slot (decision #1's economy hook).
+1. **Phase 1 (building now):** `bases[]` + `activeBaseId` (cap 3), switcher,
+   "+ New base" via SetupBase, per-base items, shared discovery + seeds + bond,
+   additive migration. Regulars get a `homeBaseId` (existing regulars migrate to
+   the current base) so phase 2 has its anchor. No visits/moves yet.
+2. **Phase 2:** decision #4's mechanics — met birds visiting other bases,
+   relationship-gated moves to another base/biome — plus a seed-priced base slot
+   (decision #1's economy hook).
 
 ## Not in scope
 
-Trading/visiting *other players'* bases, base-to-base bird migration, or
-per-base cosmetics beyond items. All additive later.
+Trading/visiting *other players'* bases, or per-base cosmetics beyond items.
+All additive later. (Base-to-base bird migration was originally out of scope but
+is now phase 2, per decision #4.)
 
 ---
 
-**Bottom line:** the build is straightforward and the migration is safe; it's
-gated only on decisions #1–#4. If you're happy with the bolded recommendations
-(cap 3, shared discovery + seeds, shared bond with per-base regulars), say so and
-I'll build phase 1.
+**Bottom line:** decisions locked 2026-07-12 (cap 3, shared discovery + seeds,
+home-base birds with visit/relocate mechanics, SetupBase reuse). Phase 1 is
+building; phase 2 follows.

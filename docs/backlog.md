@@ -1,16 +1,16 @@
 # Backlog
 
-_Last groomed: 2026-07-11 (afternoon). Open items first; everything shipped is
+_Last groomed: 2026-07-12. Open items first; everything shipped is
 archived at the bottom._
 
 ## Open
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | AdSense CMP consent message | **Blocked on Jared** (his AdSense account). Google requires a certified CMP consent banner for EEA/UK/Switzerland. Set it in AdSense → Privacy & messaging → **choose Google's CMP with 3 choices (Consent / Do not consent / Manage)** — GDPR-cleaner than 2-choice. It loads via the AdSense tag, so nothing ships until we wire ad placements (post-approval). Not a Guest Mode code change |
+| P1 | Multiple bases phase 1 | **IN PROGRESS** (2026-07-12). Decisions locked (docs/multiple-bases-design.md): cap 3; shared discovery/seeds/bond; home-base regulars; SetupBase reuse. Phase 1 = bases[]+activeBaseId, switcher, "+ New base", per-base items, homeBaseId on regulars, additive migration |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
+| P2 | Multiple bases phase 2 | Met birds visit other bases; relationship-gated moves to another base/biome (Jared's decision #4); seed-priced base slot. After phase 1 |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
-| P2 | Multiple bases | **Design drafted** (docs/multiple-bases-design.md, 2026-07-12): base→bases[]+activeBaseId, switcher UI, additive migration. Recommendations set; gated on Jared's answers to 4 decisions (base cap; discovery shared; seeds shared; bond shared vs per-base regulars). Build is straightforward once decided |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
 | P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
 | P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** |
@@ -45,6 +45,11 @@ archived at the bottom._
 - Audio recheck (no PR, out-of-pipeline S3 sync): burrowing_owl gained a call (CC BY-SA, XC909267) and mountain_bluebird upgraded from a low-quality clip to a Yellowstone NPS public-domain recording — 47 of 60 birds now have audio
 - **PvP phase 1 (backend PRs terraform + client #25) — LIVE in all envs**: async "bird-off" — Challenge a friend on the base → share link → both play the same 10 calls → win/lose/tie + seeds (winner 25 / loser 5 / tie 15). First server-side compute in the stack: API Gateway HTTP API + Lambda (JWT-authed by the user pool) + the existing DynamoDB table; server owns the answer key + scoring + seed grant. Seed payout verified landing on real cloud saves. Real account required to play (invite returns guests via signup)
 - PvP result-return view (Lambda GET `?me=` + client PR #26): reopening a challenge you've played shows the outcome (win/lose/tie, both scores) instead of the play button — closes the creator's "did I win?" gap. Verified live two-player on dev + prod
+
+**2026-07-12:**
+
+- AdSense CMP consent banner: **done by Jared in his AdSense account** (Privacy & messaging, Google's certified CMP). Loads via the AdSense tag once ad placements ship post-approval — no code change needed
+- Multiple-bases design finalized: Jared answered all 5 decisions (cap 3; shared discovery + seeds; bond shared with home-base birds that can visit and later relocate; SetupBase reused per base). Phase 1 started
 
 **Earlier (2026-05 → 2026-07-09):**
 
