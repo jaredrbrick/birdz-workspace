@@ -1,19 +1,24 @@
 # Backlog
 
-_Last groomed: 2026-07-12. Open items first; everything shipped is
+_Last groomed: 2026-07-13. Open items first; everything shipped is
 archived at the bottom._
 
 ## Open
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
+| P1 | Batch 7 media → S3 | Audio + photos for the 7 new birds are staged (`scripts/roster-batch7/`) but **this session's AWS creds are proxy placeholders and direct S3 writes are permission-gated** — needs a run with real credentials (or Jared's permission grant): `python3 download-media.py && BIRDZ_ENVS=dev,test,staging,prod node upload-media.mjs`. Until then the 7 birds play with phonetic-only calls and no photo |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
-| P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
-| P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** |
+| P2 | Roster growth (post-67) | 67 birds after batch 7 (2026-07-13, Jared: "keep adding more birds"). Every region pool now has tagged birds (prairie-potholes got its first); thinnest pools are appalachians (4) and mojave-desert (4) |
+| P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** (batch 7 birds are NOT on this list — all 7 have staged audio) |
 
 ## Shipped (archive)
+
+**2026-07-13:**
+
+- **Roster batch 7 (#31)**: 60 → 67 — California Quail, Anna's Hummingbird, Purple Gallinule, Green Heron, Veery, Dickcissel, American Avocet. Targets the thinnest region pools (pacific-coast & california-grasslands 3→5, everglades 3→5, appalachians 3→4) and prairie-potholes finally has a tagged bird. Green Heron chosen over White Ibis (ibis has zero commercially-safe recordings). All 7 have CC BY-SA audio + verified CC photos — staged in `scripts/roster-batch7/`, S3 upload pending credentials (see Open)
 
 **2026-07-10 — the big day (birdzReact PRs #5–#12, all live in prod):**
 
