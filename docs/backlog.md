@@ -1,19 +1,25 @@
 # Backlog
 
-_Last groomed: 2026-07-12. Open items first; everything shipped is
+_Last groomed: 2026-07-13. Open items first; everything shipped is
 archived at the bottom._
 
 ## Open
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
+| P1 | Batch 7 media → S3 | Audio + photos for the 7 new birds are staged (`scripts/roster-batch7/`) but **this session's AWS creds are proxy placeholders and direct S3 writes are permission-gated** — needs a run with real credentials (or Jared's permission grant): `python3 download-media.py && BIRDZ_ENVS=dev,test,staging,prod node upload-media.mjs`. Until then the 7 birds play with phonetic-only calls and no photo |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
+| P2 | S3 lifecycle rules (cost audit, 2026-07-13) | All 5 buckets have versioning on with **no lifecycle rules** — old versions of every deployed file accumulate forever (invisible at 37 MB, the classic "S3 bill makes no sense" cause at scale). Add via Terraform (static-site module + bootstrap): site buckets (dev/test/staging/prod) expire noncurrent versions after **30 days** (Jared approved) + delete expired object delete markers + abort incomplete multipart uploads after 7 days; terraform-state bucket keeps a generous window (90–365 days — it's the safety net). Skip Intelligent-Tiering/Glacier (per-object monitoring fee, sub-128KB objects excluded — wrong fit for a static site). Audit aside worth doing sometime: daily-use IAM user/role instead of the root user |
 | P2 | Ecoregion phase 3: region art | Region-flavored palettes/art. Waits on real art direction (emoji-first decision stands until the project makes money) |
-| P2 | Roster growth (post-60) | 60-bird target hit 2026-07-11. Future batches only if Jared wants more; region pools all ≥2 tagged birds now |
-| P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** |
+| P2 | Roster growth (post-67) | 67 birds after batch 7 (2026-07-13, Jared: "keep adding more birds"). Every region pool now has tagged birds (prairie-potholes got its first); thinnest pools are appalachians (4) and mojave-desert (4) |
+| P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** (batch 7 birds are NOT on this list — all 7 have staged audio) |
 
 ## Shipped (archive)
+
+**2026-07-13:**
+
+- **Roster batch 7 (#31)**: 60 → 67 — California Quail, Anna's Hummingbird, Purple Gallinule, Green Heron, Veery, Dickcissel, American Avocet. Targets the thinnest region pools (pacific-coast & california-grasslands 3→5, everglades 3→5, appalachians 3→4) and prairie-potholes finally has a tagged bird. Green Heron chosen over White Ibis (ibis has zero commercially-safe recordings). All 7 have CC BY-SA audio + verified CC photos — staged in `scripts/roster-batch7/`, S3 upload pending credentials (see Open)
 
 **2026-07-10 — the big day (birdzReact PRs #5–#12, all live in prod):**
 
@@ -49,6 +55,7 @@ archived at the bottom._
 - **Prod promoted** — multiple bases phases 1+2 (#27/#28) live on birdzgame.com per Jared's go; prod bundle verified identical to staging
 - **Dead CSS-module animations + iPhone Base layout (#29)**: Jared's screenshot (clipped "blue dot" bird, Challenge button overlapping the fort label, stats digits cut off by the bottom sheet) led to a root cause: every animation referenced from a *.module.css was localized to a hashed name while the keyframes sat in a global animations.css — birds never actually flew, visitors never hopped. Keyframes now live in the modules that use them; flight moved to the sprite root; a calling bird pauses mid-flight (call fires 30–60% into the crossing so it's on-screen); mobile fort label ellipsizes short of the Challenge button; bottom sheet adds env(safe-area-inset-bottom) with stats pinned. Verified headless at 390×844
 - **Visitor card guess-call button (#30, Jared's ask)**: the "???" card's passive hint is now a 🎧 "Guess its call" button (triggerVisitorCall → identify screen, normal scoring/bond flow), and the card pins to the visitor's near edge instead of hanging off the viewport
+- **#29 + #30 promoted to prod** same day (Jared's go) — all four envs serve the same bundle; verified the guess button in prod's served JS
 
 **2026-07-12:**
 
