@@ -1,0 +1,444 @@
+{
+  "american_avocet": {
+    "file": "File:Recurvirostra americana - American Avocet XC99571.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Recurvirostra_americana_-_American_Avocet_XC99571.mp3",
+    "sizeBytes": 208482,
+    "durationSec": 12.774125
+  },
+  "american_bittern": {
+    "file": "File:Botaurus lentiginosus - American Bittern XC368194.mp3",
+    "artist": "Justin Watts",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Botaurus_lentiginosus_-_American_Bittern_XC368194.mp3",
+    "sizeBytes": 1109518,
+    "durationSec": 49.11759060490179
+  },
+  "american_dipper": {
+    "file": "File:Yellowstone sound library - American Dipper & Canada Geese - 001.mp3",
+    "artist": "NPS &amp; MSU Acoustic Atlas/Jennifer Jerrett",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Yellowstone_sound_library_-_American_Dipper_%26_Canada_Geese_-_001.mp3",
+    "sizeBytes": 1046318,
+    "durationSec": 43.28491370508421
+  },
+  "american_kestrel": {
+    "file": "File:Falco sparverius - American Kestrel XC250844.mp3",
+    "artist": "Niels Krabbe",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Falco_sparverius_-_American_Kestrel_XC250844.mp3",
+    "sizeBytes": 212859,
+    "durationSec": 13.0476875
+  },
+  "anhinga": {
+    "file": "nri-AnhingaEVER.mp3 (NPS Natural Sounds gallery)",
+    "artist": "NPS / Leslie Velarde (Everglades National Park)",
+    "license": "Public Domain (US Government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-anhinga.htm",
+    "sizeBytes": 167156,
+    "durationSec": 10.24,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "annas_hummingbird": {
+    "file": "File:Calypte anna - Anna's Hummingbird XC153035.mp3",
+    "artist": "Bushman",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Calypte_anna_-_Anna%27s_Hummingbird_XC153035.mp3",
+    "sizeBytes": 658654,
+    "durationSec": 40.909875
+  },
+  "barred_owl": {
+    "file": "File:Strix varia - Barred Owl XC457078.mp3",
+    "artist": "Rob Porter",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Strix_varia_-_Barred_Owl_XC457078.mp3",
+    "sizeBytes": 244107,
+    "durationSec": 5.97405
+  },
+  "belted_kingfisher": {
+    "file": "XC1008797 Megaceryle alcyon",
+    "artist": "Doug Hynes",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/1008797",
+    "durationSec": 21,
+    "modifications": "transcoded to MP3"
+  },
+  "black_capped_chickadee": {
+    "file": "File:Poecile atricapillus - Black-capped Chickadee XC77884.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Poecile_atricapillus_-_Black-capped_Chickadee_XC77884.mp3",
+    "sizeBytes": 187710,
+    "durationSec": 11.666934884543828
+  },
+  "bobolink": {
+    "file": "XC1001756 Dolichonyx oryzivorus",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/1001756",
+    "durationSec": 25,
+    "modifications": "transcoded to MP3, trimmed to 25s with fade-out"
+  },
+  "burrowing_owl": {
+    "file": "xeno-canto XC909267",
+    "artist": "Pichard Olivier",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/909267",
+    "sizeBytes": 401706,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "california_quail": {
+    "file": "File:Callipepla californica - California Quail XC109825.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Callipepla_californica_-_California_Quail_XC109825.mp3",
+    "sizeBytes": 670361,
+    "durationSec": 41.6415625
+  },
+  "canada_jay": {
+    "file": "XC254431 Perisoreus canadensis",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/254431",
+    "durationSec": 11,
+    "modifications": "transcoded to MP3"
+  },
+  "carolina_wren": {
+    "file": "File:Thryothorus ludovicianus - Carolina Wren XC384609.mp3",
+    "artist": "Matthias Sirch",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Thryothorus_ludovicianus_-_Carolina_Wren_XC384609.mp3",
+    "sizeBytes": 401661,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "clarks_nutcracker": {
+    "file": "File:Yellowstone sound library - Clark\u2019s Nutcracker - 001.mp3",
+    "artist": "NPS / Shan Burson",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Yellowstone_sound_library_-_Clark%E2%80%99s_Nutcracker_-_001.mp3",
+    "sizeBytes": 91008,
+    "durationSec": 14.113333333333333
+  },
+  "common_loon": {
+    "file": "File:Gavia immer - Common Loon XC139388.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Gavia_immer_-_Common_Loon_XC139388.mp3",
+    "durationSec": 25,
+    "modifications": "transcoded to MP3, trimmed to 25s with fade-out"
+  },
+  "common_poorwill": {
+    "file": "nri-CommonPoorwillGRBA.mp3",
+    "artist": "National Park Service",
+    "license": "Public domain (US government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-common-poorwill.htm",
+    "durationSec": 6.6,
+    "modifications": "re-encoded to MP3 128k"
+  },
+  "common_raven": {
+    "file": "nri-CommonRavenGRTE.mp3",
+    "artist": "National Park Service",
+    "license": "Public domain (US government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-common-raven.htm",
+    "durationSec": 5.8,
+    "modifications": "re-encoded to MP3 128k"
+  },
+  "common_yellowthroat": {
+    "file": "File:Geothlypis trichas - Common Yellowthroat XC62257.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Geothlypis_trichas_-_Common_Yellowthroat_XC62257.mp3",
+    "sizeBytes": 454417,
+    "durationSec": 28.06928005244897
+  },
+  "dark_eyed_junco": {
+    "file": "XC797245 Junco hyemalis",
+    "artist": "steve",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/797245",
+    "durationSec": 21,
+    "modifications": "transcoded to MP3"
+  },
+  "dickcissel": {
+    "file": "File:Spiza americana - Dickcissel XC82764.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Spiza_americana_-_Dickcissel_XC82764.mp3",
+    "sizeBytes": 1416622,
+    "durationSec": 58.85525
+  },
+  "eastern_meadowlark": {
+    "file": "File:Sturnella magna - Eastern Meadowlark XC81304.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sturnella_magna_-_Eastern_Meadowlark_XC81304.mp3",
+    "sizeBytes": 1495818,
+    "durationSec": 65.12591361809854
+  },
+  "eastern_towhee": {
+    "file": "XC1077973 Pipilo erythrophthalmus",
+    "artist": "steve",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/1077973",
+    "durationSec": 12,
+    "modifications": "transcoded to MP3"
+  },
+  "elf_owl": {
+    "file": "File:Micrathene whitneyi - Elf Owl XC463541.mp3",
+    "artist": "Diana Doyle",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Micrathene_whitneyi_-_Elf_Owl_XC463541.mp3",
+    "sizeBytes": 333943,
+    "durationSec": 8.193901179554164
+  },
+  "great_blue_heron": {
+    "file": "File:Great Blue Heron1.ogg",
+    "artist": "G. McGrane",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Great_Blue_Heron1.ogg",
+    "durationSec": 14.968163265306123,
+    "modifications": "transcoded to MP3"
+  },
+  "greater_roadrunner": {
+    "file": "File:Roadrunner Clatter.ogg",
+    "artist": "Bob DuHamel",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Roadrunner_Clatter.ogg",
+    "durationSec": 10.582471655328797,
+    "modifications": "transcoded to MP3"
+  },
+  "green_heron": {
+    "file": "File:Butorides virescens - Green Heron XC469642.mp3",
+    "artist": "Audrey Plassio",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Butorides_virescens_-_Green_Heron_XC469642.mp3",
+    "sizeBytes": 533920,
+    "durationSec": 33.114
+  },
+  "herring_gull": {
+    "file": "xeno-canto XC1002938",
+    "artist": "Philippe_Grange",
+    "license": "Public Domain 1.0",
+    "source": "https://xeno-canto.org/1002938",
+    "sizeBytes": 219053,
+    "durationSec": 13.610862,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "horned_lark": {
+    "file": "File:Eremophila alpestris 964066.wav",
+    "artist": "Mary Krieger",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eremophila_alpestris_964066.wav",
+    "durationSec": 12.921904761904761,
+    "modifications": "transcoded to MP3"
+  },
+  "killdeer": {
+    "file": "nri-KILLDEER1.mp3",
+    "artist": "National Park Service",
+    "license": "Public domain (US government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-killdeer.htm",
+    "durationSec": 3.5,
+    "modifications": "re-encoded to MP3 128k"
+  },
+  "laughing_gull": {
+    "file": "File:Larus atricilla.ogg",
+    "artist": "Tony Phillips",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Larus_atricilla.ogg",
+    "durationSec": 3.632108843537415,
+    "modifications": "transcoded to MP3"
+  },
+  "limpkin": {
+    "file": "xeno-canto XC675973",
+    "artist": "Graznidos y gorjeos",
+    "license": "Public Domain 1.0",
+    "source": "https://xeno-canto.org/675973",
+    "sizeBytes": 401614,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "mountain_bluebird": {
+    "file": "Yellowstone sound library - Mountain Bluebird - 001.mp3 (NPS)",
+    "artist": "NPS / Yellowstone National Park",
+    "license": "Public Domain (US Government work)",
+    "source": "https://commons.wikimedia.org/wiki/File:Yellowstone_sound_library_-_Mountain_Bluebird_-_001.mp3",
+    "sizeBytes": 407419,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "northern_cardinal": {
+    "file": "XC870690 Cardinalis cardinalis",
+    "artist": "steve",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/870690",
+    "durationSec": 22,
+    "modifications": "transcoded to MP3"
+  },
+  "osprey": {
+    "file": "File:Pandion haliaetus.ogg",
+    "artist": "Unknown authorUnknown author",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Pandion_haliaetus.ogg",
+    "durationSec": 2.9741496598639454,
+    "modifications": "transcoded to MP3"
+  },
+  "ovenbird": {
+    "file": "File:Seiurus aurocapilla - Ovenbird XC314962.mp3",
+    "artist": "Zachary Millen",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Seiurus_aurocapilla_-_Ovenbird_XC314962.mp3",
+    "sizeBytes": 290915,
+    "durationSec": 18.842216293281144
+  },
+  "peregrine_falcon": {
+    "file": "File:Peregrine falcon call recorded in February 2010 at Yana, Karnataka.wav",
+    "artist": "Sharadapte",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Peregrine_falcon_call_recorded_in_February_2010_at_Yana,_Karnataka.wav",
+    "durationSec": 25,
+    "modifications": "transcoded to MP3, trimmed to 25s with fade-out"
+  },
+  "pileated_woodpecker": {
+    "file": "File:Dryocopus pileatus - Pileated Woodpecker XC61518.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Dryocopus_pileatus_-_Pileated_Woodpecker_XC61518.mp3",
+    "sizeBytes": 86240,
+    "durationSec": 5.056258685403913
+  },
+  "piping_plover": {
+    "file": "File:Piping Plover.ogg",
+    "artist": "G. McGrane",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Piping_Plover.ogg",
+    "durationSec": 25,
+    "modifications": "transcoded to MP3, trimmed to 25s with fade-out"
+  },
+  "prothonotary_warbler": {
+    "file": "File:Protonotaria citrea - Prothonotary Warbler XC311810.mp3",
+    "artist": "Tom Austin",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Protonotaria_citrea_-_Prothonotary_Warbler_XC311810.mp3",
+    "sizeBytes": 274840,
+    "durationSec": 17.066621,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "purple_gallinule": {
+    "file": "File:Porphyrio martinica - Purple Gallinule XC457186.mp3",
+    "artist": "Hugo Rodriguez-Garcia",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Porphyrio_martinica_-_Purple_Gallinule_XC457186.mp3",
+    "sizeBytes": 977696,
+    "durationSec": 40.514460972194115
+  },
+  "pyrrhuloxia": {
+    "file": "File:Cardinalis sinuatus 1294951.wav",
+    "artist": "Brad Banner",
+    "license": "CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Cardinalis_sinuatus_1294951.wav",
+    "durationSec": 25,
+    "modifications": "transcoded to MP3, trimmed to 25s with fade-out"
+  },
+  "red_winged_blackbird": {
+    "file": "File:Agelaius phoeniceus - Red-winged Blackbird XC78889.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Agelaius_phoeniceus_-_Red-winged_Blackbird_XC78889.mp3",
+    "sizeBytes": 310300,
+    "durationSec": 12.538036935926518
+  },
+  "ring_billed_gull": {
+    "file": "File:Larus delawarensis - Ring-billed Gull XC75111.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Larus_delawarensis_-_Ring-billed_Gull_XC75111.mp3",
+    "sizeBytes": 273012,
+    "durationSec": 16.973673,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "ruffed_grouse": {
+    "file": "XC61517 Bonasa umbellus",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://xeno-canto.org/61517",
+    "durationSec": 7,
+    "modifications": "transcoded to MP3"
+  },
+  "sandhill_crane": {
+    "file": "nri-SandhillCranesDENA.mp3",
+    "artist": "National Park Service",
+    "license": "Public domain (US government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-sandhill-crane.htm",
+    "durationSec": 6.3,
+    "modifications": "re-encoded to MP3 128k"
+  },
+  "scarlet_tanager": {
+    "file": "xeno-canto XC1145165",
+    "artist": "steve",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/1145165",
+    "sizeBytes": 401316,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "stellers_jay": {
+    "file": "XC644895 Cyanocitta stelleri",
+    "artist": "Diana Doyle",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/644895",
+    "durationSec": 12,
+    "modifications": "transcoded to MP3"
+  },
+  "veery": {
+    "file": "File:Catharus fuscescens - Veery XC78881.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Catharus_fuscescens_-_Veery_XC78881.mp3",
+    "sizeBytes": 879982,
+    "durationSec": 35.65507850636013
+  },
+  "western_gull": {
+    "file": "588a7add-3839-4eb9-86f1-66cfd867224a.mp3",
+    "artist": "National Park Service",
+    "license": "Public domain (US government work)",
+    "source": "https://www.nps.gov/subjects/sound/sounds-western-gull.htm",
+    "durationSec": 4.7,
+    "modifications": "re-encoded to MP3 128k"
+  },
+  "western_meadowlark": {
+    "file": "File:Sturnella neglecta - Western Meadowlark - XC104522.ogg",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sturnella_neglecta_-_Western_Meadowlark_-_XC104522.ogg",
+    "durationSec": 24.267755102040816,
+    "modifications": "transcoded to MP3"
+  },
+  "white_crowned_sparrow": {
+    "file": "XC553412 Zonotrichia leucophrys",
+    "artist": "radrat",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/553412",
+    "durationSec": 15,
+    "modifications": "transcoded to MP3"
+  },
+  "white_throated_sparrow": {
+    "file": "xeno-canto XC993033",
+    "artist": "Doug Hynes",
+    "license": "CC BY-SA 4.0",
+    "source": "https://xeno-canto.org/993033",
+    "sizeBytes": 401283,
+    "durationSec": 25.000249,
+    "modifications": "Transcoded to mono 128k mp3; trimmed to 25s with fade-out."
+  },
+  "wood_thrush": {
+    "file": "File:Hylocichla mustelina - Wood Thrush XC178045.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hylocichla_mustelina_-_Wood_Thrush_XC178045.mp3",
+    "sizeBytes": 157369,
+    "durationSec": 6.386375
+  }
+}
