@@ -7,7 +7,6 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P1 | Batch 7 media → S3 | Audio + photos for the 7 new birds are staged (`scripts/roster-batch7/`) but **this session's AWS creds are proxy placeholders and direct S3 writes are permission-gated** — needs a run with real credentials (or Jared's permission grant): `python3 download-media.py && BIRDZ_ENVS=dev,test,staging,prod node upload-media.mjs`. Until then the 7 birds play with phonetic-only calls and no photo |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | S3 lifecycle rules (cost audit, 2026-07-13) | All 5 buckets have versioning on with **no lifecycle rules** — old versions of every deployed file accumulate forever (invisible at 37 MB, the classic "S3 bill makes no sense" cause at scale). Add via Terraform (static-site module + bootstrap): site buckets (dev/test/staging/prod) expire noncurrent versions after **30 days** (Jared approved) + delete expired object delete markers + abort incomplete multipart uploads after 7 days; terraform-state bucket keeps a generous window (90–365 days — it's the safety net). Skip Intelligent-Tiering/Glacier (per-object monitoring fee, sub-128KB objects excluded — wrong fit for a static site). Audit aside worth doing sometime: daily-use IAM user/role instead of the root user |
@@ -19,7 +18,7 @@ archived at the bottom._
 
 **2026-07-13:**
 
-- **Roster batch 7 (#31)**: 60 → 67 — California Quail, Anna's Hummingbird, Purple Gallinule, Green Heron, Veery, Dickcissel, American Avocet. Targets the thinnest region pools (pacific-coast & california-grasslands 3→5, everglades 3→5, appalachians 3→4) and prairie-potholes finally has a tagged bird. Green Heron chosen over White Ibis (ibis has zero commercially-safe recordings). All 7 have CC BY-SA audio + verified CC photos — staged in `scripts/roster-batch7/`, S3 upload pending credentials (see Open)
+- **Roster batch 7 (#31) — COMPLETE, live in prod**: 60 → 67 — California Quail, Anna's Hummingbird, Purple Gallinule, Green Heron, Veery, Dickcissel, American Avocet. Targets the thinnest region pools (pacific-coast & california-grasslands 3→5, everglades 3→5, appalachians 3→4) and prairie-potholes finally has a tagged bird. Green Heron chosen over White Ibis (ibis has zero commercially-safe recordings). Media: **Jared ran the S3 upload himself** (session creds were proxy placeholders) — all 7 birds serve audio + photos on all 4 envs, manifests at 54 audio / 67 photos, verified over HTTP. 47+7=54 birds now have audio
 
 **2026-07-10 — the big day (birdzReact PRs #5–#12, all live in prod):**
 
