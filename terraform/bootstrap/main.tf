@@ -43,6 +43,34 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
   }
 }
 
+# State-file versions are the disaster-recovery safety net — keep a much
+# longer window than the site buckets (cost audit 2026-07-13: 90–365 days;
+# state objects are tiny, so err long).
+resource "aws_s3_bucket_lifecycle_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    id     = "expire-noncurrent-versions"
+    status = "Enabled"
+    filter {}
+    noncurrent_version_expiration {
+      noncurrent_days = 365
+    }
+    expiration {
+      expired_object_delete_marker = true
+    }
+  }
+
+  rule {
+    id     = "abort-incomplete-multipart"
+    status = "Enabled"
+    filter {}
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
 resource "aws_s3_bucket_public_access_block" "terraform_state" {
   bucket                  = aws_s3_bucket.terraform_state.id
   block_public_acls       = true
@@ -84,7 +112,7 @@ data "aws_iam_policy_document" "terraform_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [
+      values = [
         "repo:jaredrbrick/birdz-workspace:ref:refs/heads/main",
         "repo:jaredrbrick/birdz-workspace:ref:refs/heads/test",
         "repo:jaredrbrick/birdz-workspace:ref:refs/heads/staging",
@@ -112,8 +140,8 @@ resource "aws_iam_role_policy_attachment" "terraform_admin" {
 # GitHub Actions OIDC provider — created once per AWS account, shared by all environments.
 # Allows GitHub Actions to assume IAM roles without storing long-lived credentials.
 resource "aws_iam_openid_connect_provider" "github_actions" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
   thumbprint_list = [
     "6938fd4d98bab03faadb97b34396831e3780aea1",
     "1c58a3a8518e8759bf075b76b750d4f2df264fcd",

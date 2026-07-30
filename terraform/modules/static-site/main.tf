@@ -28,6 +28,34 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "site" {
   }
 }
 
+# Versioning keeps every deployed file forever without this: expire noncurrent
+# versions after 30 days (cost audit 2026-07-13, Jared approved), clean up the
+# delete markers that expiry leaves behind, and drop abandoned multipart parts.
+resource "aws_s3_bucket_lifecycle_configuration" "site" {
+  bucket = aws_s3_bucket.site.id
+
+  rule {
+    id     = "expire-noncurrent-versions"
+    status = "Enabled"
+    filter {}
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+    expiration {
+      expired_object_delete_marker = true
+    }
+  }
+
+  rule {
+    id     = "abort-incomplete-multipart"
+    status = "Enabled"
+    filter {}
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
 resource "aws_s3_bucket_public_access_block" "site" {
   bucket                  = aws_s3_bucket.site.id
   block_public_acls       = true
