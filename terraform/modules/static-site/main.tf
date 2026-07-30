@@ -101,6 +101,14 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
 
+resource "aws_cloudfront_function" "spa_router" {
+  name    = "birdz-${var.environment}-spa-router"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrite extensionless paths to their prerendered index.html"
+  publish = true
+  code    = file("${path.module}/spa-router.js")
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -122,6 +130,11 @@ resource "aws_cloudfront_distribution" "site" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
     cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.spa_router.arn
+    }
   }
 
   # SPA routing — S3 returns 403 for missing keys; remap to index.html
