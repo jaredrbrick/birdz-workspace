@@ -7,7 +7,6 @@ archived at the bottom._
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
-| P0 | New-player difficulty curve | Playtest feedback 2026-07-30: "the game is simply too hard, nobody is going to get these by sound alone." Show the bird's **photo the first time it appears**, then make later encounters **progressively harder** (photo drops away, ramp toward sound-only). Duolingo-style teach first, then quiz |
 | P0 | Retention hooks ("Duolingo for birds") | Playtest feedback 2026-07-30: not enough reason to log back in. First concrete idea: a **recent-visitors list** — birds that stopped by your base since last session. Broader direction: daily-loop / streak mechanics à la Duolingo. **Spawn cadence (Jared 2026-07-30): wait-based mechanic is right but too fast — what if a bird only came every ~6h?** Note: spawns are client-side timers today (birds only come while the app is open), so real scarcity needs offline/wall-clock visits + the recent-visitors list, or sessions would usually be empty; also needs a carve-out so new players can still practice enough to learn calls |
 | P1 | Base cap 3 → 5, cheaper plots | Jared 2026-07-30: players should be able to create more bases "from the start" — maybe 5 — and current plot prices are **too expensive** (SLOT_COSTS [0,250,500] today). Raise MAX_BASES to 5 and drop plot prices; exact numbers Jared's call (proposal: 0/50/100/200/300?) |
 | P1 | Location integrity: photo or GPS ping only | Jared 2026-07-30: a **photo or device location ping should be the ONLY way to report a location** — retire the world-map picker path for base placement. Pairs with region consistency below |
@@ -20,6 +19,10 @@ archived at the bottom._
 | P2 | 13 birds still silent | cactus_wren, gambels_quail, brown_pelican, varied_thrush, roseate_spoonbill, american_oystercatcher, sage_thrasher, greater_sage_grouse, scaled_quail, black_oystercatcher, western_kingbird, phainopepla, pinyon_jay — zero commercially-safe recordings. **Do NOT auto-recheck (Jared, 2026-07-11 — token waste); revisit only when Jared asks** (batch 7 birds are NOT on this list — all 7 have staged audio) |
 
 ## Shipped (archive)
+
+**2026-07-30:**
+
+- **Difficulty curve (#34) — P0 from playtest, live dev/test/staging**: a bird's first identify session shows its photo ("🐣 New bird!"), the next two blur it progressively (7px → 16px+grayscale), 4th+ is sound-only — teach first, then quiz. New permanent `Progress.encounters` per-bird count (history is capped at 50 so it couldn't serve), backfilled for old saves from history + discovered (≥1) + mastered (≥3). Generic alt text so the name doesn't leak; hints/scoring/PvP untouched. 191 tests + headless drive green. **Promoting test/staging also carried #32/#33 (prerender + crawlability) and the roster expansion to those envs for the first time (they'd been dev-only); Terraform applied the spa-router CloudFront function to test/staging too. Prod untouched — needs Jared's "promote prod" (that promotion now carries #32–#34 + roster; AdSense re-review waits on it)**
 
 **2026-07-13:**
 
