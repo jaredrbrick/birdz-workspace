@@ -1,12 +1,14 @@
 # Backlog
 
-_Last groomed: 2026-07-13. Open items first; everything shipped is
+_Last groomed: 2026-07-30. Open items first; everything shipped is
 archived at the bottom._
 
 ## Open
 
 | Priority | Item | Status / notes |
 |----------|------|----------------|
+| P0 | New-player difficulty curve | Playtest feedback 2026-07-30: "the game is simply too hard, nobody is going to get these by sound alone." Show the bird's **photo the first time it appears**, then make later encounters **progressively harder** (photo drops away, ramp toward sound-only). Duolingo-style teach first, then quiz |
+| P0 | Retention hooks ("Duolingo for birds") | Playtest feedback 2026-07-30: not enough reason to log back in. First concrete idea: a **recent-visitors list** — birds that stopped by your base since last session. Broader direction: daily-loop / streak mechanics à la Duolingo |
 | P1 | AdSense (Google side) | ads.txt + public pages live. **Review requested — awaiting Google** (days–weeks); ad placements wire up after approval. Blocked on Google |
 | P2 | PvP phase 1.5 (remaining polish) | Result-return view SHIPPED 2026-07-12 (reopening a challenge shows win/lose). Left: a "my challenges" list (needs a by-user index — GSI or USER# pointer items) and rematch. Opaque-audio blind play dropped per Jared (audio URLs already public in single-player, so it adds no real protection) |
 | P2 | S3 lifecycle rules (cost audit, 2026-07-13) | All 5 buckets have versioning on with **no lifecycle rules** — old versions of every deployed file accumulate forever (invisible at 37 MB, the classic "S3 bill makes no sense" cause at scale). Add via Terraform (static-site module + bootstrap): site buckets (dev/test/staging/prod) expire noncurrent versions after **30 days** (Jared approved) + delete expired object delete markers + abort incomplete multipart uploads after 7 days; terraform-state bucket keeps a generous window (90–365 days — it's the safety net). Skip Intelligent-Tiering/Glacier (per-object monitoring fee, sub-128KB objects excluded — wrong fit for a static site). Audit aside worth doing sometime: daily-use IAM user/role instead of the root user |
