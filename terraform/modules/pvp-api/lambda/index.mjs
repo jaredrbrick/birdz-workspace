@@ -81,6 +81,22 @@ async function getChallenge(id) {
   return { meta, results }
 }
 
+// Pointer item in the player's own partition (alongside their PROGRESS item)
+// so "my challenges" is a single Query — no GSI needed. Keyed newest-last by
+// zero-padded timestamp; same TTL as the challenge it points at.
+async function putChallengePointer(identityId, challengeId, ttlEpoch) {
+  if (!identityId) return
+  await doc.send(new PutCommand({
+    TableName: TABLE,
+    Item: {
+      userId: identityId,
+      recordKey: `PVP#${String(Date.now()).padStart(15, '0')}#${challengeId}`,
+      challengeId,
+      ttlEpoch,
+    },
+  }))
+}
+
 async function grantSeeds(identityId, amount) {
   // Winner's seeds live at progress.seeds on their PROGRESS item (keyed by
   // identity id). No-op-safe: a missing item just means a guest with no cloud save.
@@ -124,7 +140,44 @@ export async function handler(event) {
           ttlEpoch: Math.floor(Date.now() / 1000) + TTL_DAYS * 86400,
         },
       }))
+      await putChallengePointer(
+        body.identityId, challengeId,
+        Math.floor(Date.now() / 1000) + TTL_DAYS * 86400,
+      )
       return json(201, { id: challengeId, birds })
+    }
+
+    if (route === 'GET /my-challenges') {
+      const me = event.queryStringParameters?.me
+      if (!me) return json(400, { error: 'me required' })
+      const res = await doc.send(new QueryCommand({
+        TableName: TABLE,
+        KeyConditionExpression: 'userId = :u AND begins_with(recordKey, :p)',
+        ExpressionAttributeValues: { ':u': me, ':p': 'PVP#' },
+        ScanIndexForward: false,
+        Limit: 10,
+      }))
+      // One challenge Query per pointer — fine at ≤10 rows and this scale;
+      // revisit with a BatchGet if the list ever grows.
+      const challenges = []
+      for (const ptr of res.Items ?? []) {
+        const { meta, results } = await getChallenge(ptr.challengeId)
+        if (!meta) continue
+        const mine = results.find(r => r.recordKey === `RESULT#${me}`)
+        const opp = results.find(r => r.recordKey !== `RESULT#${me}`)
+        challenges.push({
+          id: ptr.challengeId,
+          createdAt: meta.createdAt,
+          createdByName: meta.createdByName,
+          youCreated: meta.createdByIdentityId === me,
+          opponentName: opp?.name ?? null,
+          status: !mine ? 'yours-to-play' : opp ? 'complete' : 'waiting',
+          outcome: mine && opp ? outcomeFor(mine, opp) : null,
+          yourScore: mine?.score ?? null,
+          opponentScore: opp?.score ?? null,
+        })
+      }
+      return json(200, { challenges })
     }
 
     if (route === 'GET /challenges/{id}') {
@@ -188,6 +241,11 @@ export async function handler(event) {
           ttlEpoch: meta.ttlEpoch,
         },
       }))
+      // The responder gets a pointer too — but not a second one for a creator
+      // replaying their own challenge (their create already wrote it).
+      if (me.identityId !== meta.createdByIdentityId) {
+        await putChallengePointer(me.identityId, id, meta.ttlEpoch)
+      }
 
       // Outcome + seed payout once an opponent's result exists.
       const opponent = results.find(r => r.recordKey !== key)
