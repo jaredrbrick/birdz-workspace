@@ -125,8 +125,14 @@ America today, not that something went wrong with their location.
    lazy-fetched and cached. Returns all three nesting levels. Measured
    **0.066 ms/lookup**, 34 ms to fetch and index; coastline snapping within
    25 km. 18 tests. Nothing imports it yet, so the bundle is unchanged.
-3. Map the 74-bird roster's existing region tags onto L2 families (mechanical:
-   today's 18 pool ids each map to one or more of the 51 L2 names).
+3. ~~Map the roster's region tags onto L2 families~~ **DONE** (PR #45) —
+   `src/data/regionFamilies.ts`. All 50 families joined to the legacy pool
+   tags; measured pool sizes **25–47 birds** across the US and Canada.
+   `L3_POOL_OVERRIDES` keeps the Mojave/Sonoran/Chihuahuan split that phase 2
+   shipped, which the L2 grain would otherwise have re-merged. Same PR drops
+   the **"Water" pseudo-region** — Chicago's lakefront was resolving to
+   *Water* instead of Central Corn Belt Plains. Index is now 181 regions /
+   50 L2 / 15 L1.
 4. Setup / spawner / travelers / visitors read the canonical region. Bases
    gain `regionId`/`poolFamily` additively; keep `ecoregionId` mirrored for
    old cached clients, re-derived on load from each base's stored `coords`.
@@ -138,10 +144,14 @@ America today, not that something went wrong with their location.
 
 ## Risks worth naming
 
-- **Roster thinness is now visible.** 74 birds across 182 named regions means
-  a player in, say, "Klamath Mountains" sees the L2 pool, not a bespoke one.
-  That's fine and honest, but region *names* will outpace region *character*
-  until the roster grows. Batch 8's pattern (7 birds/batch) is the lever.
+- **Roster thinness is now measured, not feared.** Pool sizes came out at
+  **25–47 birds** across the US and Canada — healthy. The real gap is
+  **Mexico**: it's inside the playable footprint but no bird carries a
+  Mexican region tag, so a base in, say, the Neo-Volcanic System sees only
+  the 20 universal birds. 19 of the 50 families are empty for the same
+  reason (tundra, Sierra Madre, Mexican tropics). Region *names* will outpace
+  region *character* until the roster grows; batch 8's pattern (7 birds per
+  batch) is the lever, and a Mexico-focused batch is the highest-value one.
 - **Licensing**: CEC/EPA ecoregions are US/Canada/Mexico government data,
   published for public use; the EPA page states no restriction. Worth one
   explicit confirmation before it ships in a monetized app.
