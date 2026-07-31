@@ -84,35 +84,55 @@ from the canonical map at load (one-time, additive field; keep the legacy
 `ecoregionId` for old clients). Bases built before coords existed keep legacy
 behavior.
 
-## Open questions for Jared
+## Decisions — Jared, 2026-07-31
 
 1. ~~Region size~~ — **answered by the data**: ship L3 (182) as the name
    players see and L2 (51) as the pool family. Both are in one file, so this
    isn't a tradeoff any more. Level IV (~1,000, US-only) exists if "hundreds"
    should later mean "over a thousand".
-2. **Region-locked spawns only?** Should home spawns come *only* from your
-   region's pool (stronger travel incentive), or keep some universal birds
-   (current behavior, gentler)? **This is the real design decision left.**
-3. **Non-NA players**: generic fallback region (today's behavior), or a
-   coarse global layer (WWF ecoregions) later?
-4. **Map scope v1**: just your regions + neighbors, or the whole continent
-   browsable?
-5. **The manual biome override** in SetupBase's confirm step lets a player
-   claim any biome regardless of location — it contradicts GPS-only placement
-   and would let someone pick their region by hand. Delete it, or keep it only
-   when detection confidence is `fallback`?
+2. **Spawns: mostly region-locked.** ~80% from your region's L2 pool, ~20%
+   widespread birds (robin, crow, house sparrow) so a new player in a thin
+   region still has a game on day one. Travel is the point; an empty yard
+   isn't.
+3. **Outside North America: block base creation.** No generic fallback
+   region. See the Hawaii caveat below before this ships.
+4. **Map v1: your regions + neighbors.** Regions you've visited plus adjacent
+   ones, bases pinned. Whole-continent browsing comes later.
+5. **The manual biome override in SetupBase: delete it.** Region becomes a
+   pure function of coordinates with no hand-picking, which is the entire
+   point of a canonical map.
+
+### Decision 3, settled — the CEC footprint *is* the playable world
+
+Raised as a caveat and answered by Jared 2026-07-31: *"block everything not
+covered in the CEC dataset."* No island carve-out, no generic fallback pool.
+If `lookupRegion` returns null, base creation is refused.
+
+Measured footprint: Alaska is in (Anchorage → Cook Inlet), as are Canada and
+Mexico. **Out**: Hawaii, Puerto Rico, Guam, and everywhere off-continent.
+Coastline artifacts are not affected — the 25 km snap runs first, so a
+bayfront base still resolves.
+
+The gate needs honest copy: tell the player Birdz covers continental North
+America today, not that something went wrong with their location.
 
 ## Build order
 
 1. ~~Pipeline script~~ **DONE** — `scripts/regions/build-regions.sh` +
    the built `na-ecoregions-l3.topo.json` and `lookup-test.mjs` are committed.
-2. `lookupRegionCanonical(lat, lng)` in birdzReact (lazy-import the topojson,
-   bbox pre-filter + point-in-polygon), returning `{ l3Id, l3Name, l2Id }`.
-   Bases gain `regionId`/`poolFamily` additively; keep `ecoregionId` mirrored
-   for old cached clients. Re-derive on load from each base's stored `coords`.
+2. ~~`lookupRegion(lat, lng)` in birdzReact~~ **DONE** (PR #44) —
+   `src/utils/regionLookup.ts` + `public/regions/na-ecoregions-l3.topo.json`,
+   lazy-fetched and cached. Returns all three nesting levels. Measured
+   **0.066 ms/lookup**, 34 ms to fetch and index; coastline snapping within
+   25 km. 18 tests. Nothing imports it yet, so the bundle is unchanged.
 3. Map the 74-bird roster's existing region tags onto L2 families (mechanical:
    today's 18 pool ids each map to one or more of the 51 L2 names).
-4. Setup / spawner / travelers / visitors read the canonical region.
+4. Setup / spawner / travelers / visitors read the canonical region. Bases
+   gain `regionId`/`poolFamily` additively; keep `ecoregionId` mirrored for
+   old cached clients, re-derived on load from each base's stored `coords`.
+   Delete the manual biome override (decision 5) and gate creation outside
+   NA (decision 3, pending the island caveat). Spawner applies the 80/20
+   region-locked split (decision 2).
 5. Region map UI — replaces the biome-card World Map: your regions, your
    forts, where you've been, what's adjacent to travel to.
 
@@ -125,6 +145,6 @@ behavior.
 - **Licensing**: CEC/EPA ecoregions are US/Canada/Mexico government data,
   published for public use; the EPA page states no restriction. Worth one
   explicit confirmation before it ships in a monetized app.
-- **Coastlines**: at 2% simplification a bayfront base can land just outside
-  its polygon. Mitigation: nearest-region fallback within a small radius
-  rather than "outside NA".
+- ~~**Coastlines**~~ **handled in PR #44**: nearest-region snapping within
+  25 km. Verified — Puget Sound water and Key West both resolve, while 30 km
+  off the Oregon coast correctly returns null.
