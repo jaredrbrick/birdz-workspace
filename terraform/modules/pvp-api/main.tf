@@ -111,6 +111,7 @@ locals {
     "POST /challenges",
     "GET /challenges/{id}",
     "POST /challenges/{id}/results",
+    "GET /my-challenges",
   ]
 }
 
