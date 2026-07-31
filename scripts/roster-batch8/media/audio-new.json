@@ -1,0 +1,58 @@
+{
+  "black_throated_green_warbler": {
+    "file": "File:Setophaga virens - Black-throated Green Warbler XC101293.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Setophaga_virens_-_Black-throated_Green_Warbler_XC101293.mp3",
+    "sizeBytes": 740474,
+    "durationSec": 46.023625
+  },
+  "hooded_warbler": {
+    "file": "File:Setophaga citrina - Hooded Warbler XC78878.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Setophaga_citrina_-_Hooded_Warbler_XC78878.mp3",
+    "sizeBytes": 1478240,
+    "durationSec": 60.16387492445847
+  },
+  "louisiana_waterthrush": {
+    "file": "File:Parkesia motacilla - Louisiana Waterthrush XC408861.mp3",
+    "artist": "Philip Vanbergen",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Parkesia_motacilla_-_Louisiana_Waterthrush_XC408861.mp3",
+    "sizeBytes": 754003,
+    "durationSec": 18.747675
+  },
+  "eastern_whip_poor_will": {
+    "file": "File:Antrostomus vociferus - Eastern Whip-poor-will XC103418.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Antrostomus_vociferus_-_Eastern_Whip-poor-will_XC103418.mp3",
+    "sizeBytes": 246054,
+    "durationSec": 15.122375
+  },
+  "wild_turkey": {
+    "file": "File:Meleagris gallopavo - Wild Turkey XC104533.mp3",
+    "artist": "Jonathon Jongsma",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Meleagris_gallopavo_-_Wild_Turkey_XC104533.mp3",
+    "sizeBytes": 1887450,
+    "durationSec": 117.709625
+  },
+  "tufted_titmouse": {
+    "file": "File:Tufted Titmouse call.ogg",
+    "artist": "U. S. Fish and Wildlife Service",
+    "license": "Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Tufted_Titmouse_call.ogg",
+    "sizeBytes": 185749,
+    "durationSec": 15.088616780045351
+  },
+  "rock_wren": {
+    "file": "File:Salpinctes obsoletus - Rock Wren XC571628.mp3",
+    "artist": "radrat",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Salpinctes_obsoletus_-_Rock_Wren_XC571628.mp3",
+    "sizeBytes": 282621,
+    "durationSec": 6.910867646883897
+  }
+}
